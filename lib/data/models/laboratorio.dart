@@ -29,7 +29,7 @@ class Laboratorio {
     return Laboratorio(
       id: json['id'],
       idCurso: json['id_curso'],
-      cursoDescripcion: json['curso_descripcion'],
+      cursoDescripcion: json['descripcion'],
       centro: json['centro'],
       nombreCead: json['nombrecead'],
       estudiantesGrupo: json['estudiantes_grupo'],

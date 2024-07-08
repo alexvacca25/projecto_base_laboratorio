@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/course_controller.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/add_centro_atendido_dialog.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/course_card.dart';
-
+import 'package:projecto_base_laboratorio/data/models/course.dart';
+import 'package:projecto_base_laboratorio/presentation/widgets/new_course_dialog.dart';
 
 class CoursePage extends StatelessWidget {
   @override
@@ -13,7 +15,7 @@ class CoursePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Laboratorio Nodo Centro'),
+        title: Text('Laboratorio Nodo Centro', style: GoogleFonts.montserrat()),
       ),
       body: Column(
         children: [
@@ -45,7 +47,7 @@ class CoursePage extends StatelessWidget {
                           items: centros.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style: TextStyle(fontSize: 14)),
+                              child: Text(value, style: GoogleFonts.montserrat(fontSize: 14)),
                             );
                           }).toList(),
                         );
@@ -78,7 +80,7 @@ class CoursePage extends StatelessWidget {
                           items: cursos.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style: TextStyle(fontSize: 14)),
+                              child: Text(value, style: GoogleFonts.montserrat(fontSize: 14)),
                             );
                           }).toList(),
                         );
@@ -93,33 +95,47 @@ class CoursePage extends StatelessWidget {
             child: Obx(() {
               if (controller.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
+              } else if (controller.filteredCourses.isEmpty) {
+                return Center(child: Text('No hay cursos que coincidan con los filtros.', style: GoogleFonts.montserrat()));
               } else {
-                return GridView.builder(
-                  padding: EdgeInsets.all(16.0),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
-                    childAspectRatio: 3 / 2,
-                  ),
-                  itemCount: controller.filteredCourses.length,
-                  itemBuilder: (context, index) {
-                    return CourseCard(
-                      course: controller.filteredCourses[index],
-                      onEdit: () {
-                        // Implementar lógica de edición
-                        print('Edit course: ${controller.filteredCourses[index].descripcion}');
-                      },
-                      onDelete: () {
-                        // Implementar lógica de eliminación
-                        print('Delete course: ${controller.filteredCourses[index].descripcion}');
-                        controller.courses.removeAt(index);
-                      },
-                      onAddCentroAtendido: (context, onAdd) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AddCentroAtendidoDialog(onAdd: onAdd);
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    int crossAxisCount = constraints.maxWidth < 600
+                        ? 1
+                        : constraints.maxWidth < 900
+                            ? 2
+                            : 4;
+
+                    return GridView.builder(
+                      padding: EdgeInsets.all(16.0),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 3 / 2,
+                      ),
+                      itemCount: controller.filteredCourses.length,
+                      itemBuilder: (context, index) {
+                        return CourseCard(
+                          course: controller.filteredCourses[index],
+                          onEdit: () {
+                            // Implementar lógica de edición
+                            print('Edit course: ${controller.filteredCourses[index].descripcion}');
+                          },
+                          onDelete: () {
+                            // Implementar lógica de eliminación
+                            print('Delete course: ${controller.filteredCourses[index].descripcion}');
+                            controller.filteredCourses.removeAt(index);
+                          },
+                          onAddCentroAtendido: (context, onAdd) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AddCentroAtendidoDialog(onAdd: (centroAtendido) {
+                                  controller.addCentroAtendido(index, centroAtendido); // Agregar el centro atendido al curso
+                                });
+                              },
+                            );
                           },
                         );
                       },
@@ -146,7 +162,17 @@ class CoursePage extends StatelessWidget {
             child: Icon(Icons.add),
             label: 'Nuevo Curso',
             onTap: () {
-              // Acción para nuevo curso
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return NewCourseDialog(
+                    onAdd: (course) {
+                      // Implementar lógica para agregar el nuevo curso
+                      controller.addCourse(course);
+                    },
+                  );
+                },
+              );
             },
           ),
           SpeedDialChild(

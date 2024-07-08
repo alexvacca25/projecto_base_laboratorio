@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:projecto_base_laboratorio/domain/usecases/get_laboratorios.dart';
 
-
 class LaboratorioController extends GetxController {
   final GetLaboratorio getLaboratorios;
 
@@ -25,7 +24,8 @@ class LaboratorioController extends GetxController {
     try {
       var result = await getLaboratorios();
       laboratorios.value = result;
-      filteredLaboratorios.value = result;
+      print(result);
+      filterLaboratorios(); // Filtrar después de obtener los datos
     } catch (e) {
       // Handle error
       Get.snackbar('Error', 'Failed to load laboratorios');
@@ -37,11 +37,15 @@ class LaboratorioController extends GetxController {
   void filterLaboratorios() {
     var centro = selectedCentro.value;
     var curso = selectedCurso.value;
-    filteredLaboratorios.value = laboratorios.where((laboratorio) {
-      final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
-      final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
-      return matchCentro && matchCurso;
-    }).toList();
+    if (centro == 'Todos' && curso == 'Todos') {
+      filteredLaboratorios.value = laboratorios;
+    } else {
+      filteredLaboratorios.value = laboratorios.where((laboratorio) {
+        final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
+        final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
+        return matchCentro && matchCurso;
+      }).toList();
+    }
   }
 
   void setSelectedCentro(String centro) {
@@ -51,6 +55,11 @@ class LaboratorioController extends GetxController {
 
   void setSelectedCurso(String curso) {
     selectedCurso.value = curso;
+    filterLaboratorios();
+  }
+
+    void addLaboratorio(Laboratorio laboratorio) {
+    laboratorios.add(laboratorio);
     filterLaboratorios();
   }
 }

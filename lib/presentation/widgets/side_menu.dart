@@ -12,17 +12,14 @@ class SideMenu extends StatelessWidget {
       child: Column(
         children: <Widget>[
          const  UserAccountsDrawerHeader(
-            accountName: Text('Nombre de Usuario'),
+            accountName: Text('Gestion de Recursos'),
             accountEmail: Text('usuario@ejemplo.com'),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage('assets/profile_picture.png'), // Asegúrate de tener esta imagen en tu carpeta assets
+             child: Icon(Icons.settings, size: 50,),
             ),
             decoration: BoxDecoration(
               color: Colors.blue,
-              image: DecorationImage(
-                image: AssetImage('assets/drawer_background.png'), // Imagen de fondo para el header
-                fit: BoxFit.cover,
-              ),
+             
             ),
           ),
           ListTile(

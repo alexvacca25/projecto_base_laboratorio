@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:projecto_base_laboratorio/presentation/widgets/new_laboratorio_dialog.dart';
 import '../controllers/laboratorio_controller.dart';
 import '../widgets/laboratorio_card.dart';
 
@@ -11,7 +13,7 @@ class LaboratorioPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Laboratorio Nodo Centro'),
+        title: Text('Laboratorio Nodo Centro', style: GoogleFonts.montserrat()),
       ),
       body: Column(
         children: [
@@ -43,7 +45,7 @@ class LaboratorioPage extends StatelessWidget {
                           items: centros.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style: TextStyle(fontSize: 14)),
+                              child: Text(value, style: GoogleFonts.montserrat(fontSize: 14)),
                             );
                           }).toList(),
                         );
@@ -76,7 +78,7 @@ class LaboratorioPage extends StatelessWidget {
                           items: cursos.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style: TextStyle(fontSize: 14)),
+                              child: Text(value, style: GoogleFonts.montserrat(fontSize: 14)),
                             );
                           }).toList(),
                         );
@@ -91,27 +93,39 @@ class LaboratorioPage extends StatelessWidget {
             child: Obx(() {
               if (controller.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
+              } else if (controller.filteredLaboratorios.isEmpty) {
+                return Center(child: Text('No hay laboratorios que coincidan con los filtros.', style: GoogleFonts.montserrat()));
               } else {
-                return GridView.builder(
-                  padding: EdgeInsets.all(16.0),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 16.0,
-                    mainAxisSpacing: 16.0,
-                    childAspectRatio: 3 / 2,
-                  ),
-                  itemCount: controller.filteredLaboratorios.length,
-                  itemBuilder: (context, index) {
-                    return LaboratorioCard(
-                      laboratorio: controller.filteredLaboratorios[index],
-                      onEdit: () {
-                        // Implementar lógica de edición
-                        print('Edit laboratorio: ${controller.filteredLaboratorios[index].cursoDescripcion}');
-                      },
-                      onDelete: () {
-                        // Implementar lógica de eliminación
-                        print('Delete laboratorio: ${controller.filteredLaboratorios[index].cursoDescripcion}');
-                        controller.laboratorios.removeAt(index);
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    int crossAxisCount = constraints.maxWidth < 600
+                        ? 1
+                        : constraints.maxWidth < 900
+                            ? 2
+                            : 4;
+
+                    return GridView.builder(
+                      padding: EdgeInsets.all(16.0),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 3 / 2,
+                      ),
+                      itemCount: controller.filteredLaboratorios.length,
+                      itemBuilder: (context, index) {
+                        return LaboratorioCard(
+                          laboratorio: controller.filteredLaboratorios[index],
+                          onEdit: () {
+                            // Implementar lógica de edición
+                            print('Edit laboratorio: ${controller.filteredLaboratorios[index].cursoDescripcion}');
+                          },
+                          onDelete: () {
+                            // Implementar lógica de eliminación
+                            print('Delete laboratorio: ${controller.filteredLaboratorios[index].cursoDescripcion}');
+                            controller.filteredLaboratorios.removeAt(index);
+                          },
+                        );
                       },
                     );
                   },
@@ -136,7 +150,17 @@ class LaboratorioPage extends StatelessWidget {
             child: Icon(Icons.add),
             label: 'Nuevo Curso',
             onTap: () {
-              // Acción para nuevo curso
+               showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return NewLaboratorioDialog(
+                    onAdd: (laboratorio) {
+                      // Implementar lógica para agregar el nuevo laboratorio
+                      controller.addLaboratorio(laboratorio);
+                    },
+                  );
+                },
+              );
             },
           ),
           SpeedDialChild(
