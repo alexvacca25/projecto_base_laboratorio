@@ -9,7 +9,7 @@ class GetLaboratorio {
 
   GetLaboratorio({required this.repository});
 
-  Future<List<Laboratorio>> call() async {
-    return await repository.getLaboratorios();
+  Future<List<Laboratorio>> call(int periodoId) async {
+    return await repository.getLaboratorios(periodoId);
   }
 }

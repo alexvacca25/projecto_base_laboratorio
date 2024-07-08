@@ -9,7 +9,16 @@ enum MenuItem {
 class MenuOpController extends GetxController {
   var selectedItem = MenuItem.laboratorios.obs;
 
-  void selectItem(MenuItem item) {
-    selectedItem.value = item;
+  String get selectedItemName {
+    switch (selectedItem.value) {
+      case MenuItem.laboratorios:
+        return 'Laboratorios';
+      case MenuItem.nodo_centro:
+        return 'Nodo Centro';
+      case MenuItem.laboratorio_curso:
+        return 'Laboratorio Curso';
+      default:
+        return '';
+    }
   }
 }

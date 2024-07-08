@@ -11,7 +11,7 @@ class LaboratorioRepositoyImp implements LaboratorioRepository {
   LaboratorioRepositoyImp({required this.apiProvider});
 
   @override
-  Future<List<Laboratorio>> getLaboratorios() async {
-    return await apiProvider.fetchLaboratorios();
+  Future<List<Laboratorio>> getLaboratorios(int periodoId) async {
+    return await apiProvider.fetchLaboratorios(periodoId);
   }
 }

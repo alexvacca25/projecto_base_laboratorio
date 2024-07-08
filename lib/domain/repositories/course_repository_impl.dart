@@ -6,11 +6,12 @@ import 'package:projecto_base_laboratorio/domain/entities/course.dart';
 
 class CourseRepositoryImpl implements CourseRepository {
   final ApiProvider apiProvider;
+  
 
   CourseRepositoryImpl({required this.apiProvider});
 
   @override
-  Future<List<Course>> getCourses() async {
-    return await apiProvider.fetchCourses();
+  Future<List<Course>> getCourses(int periodoId) async {
+    return await apiProvider.fetchCourses(periodoId);
   }
 }

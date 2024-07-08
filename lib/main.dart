@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/course_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/laboratorio_page.dart';
 import 'presentation/widgets/side_menu.dart';
-
 import 'presentation/controllers/menu_controller.dart';
+import 'presentation/controllers/periodo_controller.dart';
 import 'presentation/bindings/course_binding.dart';
 
 void main() {
@@ -33,10 +33,13 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MenuOpController menuController = Get.find();
+    final PeriodoController periodoController = Get.find();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inicio'),
+        title: Obx(() {
+          return Text('${menuController.selectedItemName} - ${periodoController.selectedPeriodoDescription}');
+        }),
       ),
       drawer: SideMenu(),
       body: Obx(() {

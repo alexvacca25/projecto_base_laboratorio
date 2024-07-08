@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:projecto_base_laboratorio/domain/usecases/get_laboratorios.dart';
+import 'package:projecto_base_laboratorio/presentation/controllers/periodo_controller.dart';
 
 class LaboratorioController extends GetxController {
   final GetLaboratorio getLaboratorios;
+  final PeriodoController periodoController;
 
-  LaboratorioController({required this.getLaboratorios});
+  LaboratorioController({required this.getLaboratorios, required this.periodoController});
 
   var laboratorios = <Laboratorio>[].obs;
   var filteredLaboratorios = <Laboratorio>[].obs;
@@ -17,12 +19,14 @@ class LaboratorioController extends GetxController {
   void onInit() {
     fetchLaboratorios();
     super.onInit();
+    periodoController.selectedPeriodoId.listen((_) => fetchLaboratorios());
   }
 
   void fetchLaboratorios() async {
     isLoading.value = true;
+    laboratorios.clear();
     try {
-      var result = await getLaboratorios();
+      var result = await getLaboratorios(periodoController.selectedPeriodoId.value);
       laboratorios.value = result;
       print(result);
       filterLaboratorios(); // Filtrar después de obtener los datos

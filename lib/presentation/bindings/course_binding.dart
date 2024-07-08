@@ -9,6 +9,7 @@ import 'package:projecto_base_laboratorio/domain/usecases/get_laboratorios.dart'
 import 'package:projecto_base_laboratorio/presentation/controllers/course_controller.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/laboratorio_controller.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/menu_controller.dart';
+import 'package:projecto_base_laboratorio/presentation/controllers/periodo_controller.dart';
 
 
 class CourseBinding extends Bindings {
@@ -16,14 +17,16 @@ class CourseBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<ApiProvider>(() => ApiProvider());
 
+    Get.lazyPut<PeriodoController>(() => PeriodoController(apiProvider: Get.find()));
+
     Get.lazyPut<CourseRepository>(() => CourseRepositoryImpl(apiProvider: Get.find()));
-    Get.lazyPut<GetCourses>(() => GetCourses(repository: Get.find()));
-    Get.lazyPut<CourseController>(() => CourseController(getCourses: Get.find()));
+    Get.lazyPut<GetCourses>(() => GetCourses(repository: Get.find(),));
+    Get.lazyPut<CourseController>(() => CourseController(getCourses: Get.find(), periodoController: Get.find()));
     
     Get.lazyPut<MenuOpController>(() => MenuOpController());
     
     Get.lazyPut<LaboratorioRepository>(() => LaboratorioRepositoyImp(apiProvider: Get.find()));
     Get.lazyPut<GetLaboratorio>(() => GetLaboratorio(repository: Get.find()));
-    Get.lazyPut<LaboratorioController>(() => LaboratorioController(getLaboratorios: Get.find()));
+    Get.lazyPut<LaboratorioController>(() => LaboratorioController(getLaboratorios: Get.find(), periodoController: Get.find()));
   }
 }

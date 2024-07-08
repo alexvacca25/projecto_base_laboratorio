@@ -7,7 +7,7 @@ class GetCourses {
 
   GetCourses({required this.repository});
 
-  Future<List<Course>> call() async {
-    return await repository.getCourses();
+  Future<List<Course>> call(int periodoId) async {
+    return await repository.getCourses(periodoId);
   }
 }

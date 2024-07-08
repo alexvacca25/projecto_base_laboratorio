@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/data/models/course.dart';
 import 'package:projecto_base_laboratorio/domain/usecases/get_courses.dart';
+import 'package:projecto_base_laboratorio/presentation/controllers/periodo_controller.dart';
 
 class CourseController extends GetxController {
   final GetCourses getCourses;
+    final PeriodoController periodoController;
 
-  CourseController({required this.getCourses});
+  CourseController({required this.getCourses, required this.periodoController});
 
   var courses = <Course>[].obs;
   var filteredCourses = <Course>[].obs;
@@ -17,12 +19,14 @@ class CourseController extends GetxController {
   void onInit() {
     fetchCourses();
     super.onInit();
+    periodoController.selectedPeriodoId.listen((_) => fetchCourses());
   }
 
   void fetchCourses() async {
     isLoading.value = true;
+    courses.clear();
     try {
-      var result = await getCourses();
+      var result = await getCourses(periodoController.selectedPeriodoId.value);
       courses.value = result;
       filterCourses(); // Filtrar después de obtener los datos
     } catch (e) {

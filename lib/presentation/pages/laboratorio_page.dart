@@ -13,7 +13,7 @@ class LaboratorioPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Laboratorio Nodo Centro', style: GoogleFonts.montserrat()),
+        title: Text('Laboratorio', style: GoogleFonts.montserrat()),
       ),
       body: Column(
         children: [
