@@ -29,10 +29,8 @@ class LaboratorioController extends GetxController {
     try {
       var result = await getLaboratorios(periodoController.selectedPeriodoId.value);
       laboratorios.value = result;
-      print(result);
-      filterLaboratorios(); // Filtrar después de obtener los datos
+      filterLaboratorios();
     } catch (e) {
-      // Handle error
       Get.snackbar('Error', 'Failed to load laboratorios');
     } finally {
       isLoading.value = false;
@@ -63,8 +61,13 @@ class LaboratorioController extends GetxController {
     filterLaboratorios();
   }
 
-    void addLaboratorio(Laboratorio laboratorio) {
+  void addLaboratorio(Laboratorio laboratorio) {
     laboratorios.add(laboratorio);
+    filterLaboratorios();
+  }
+
+  void removeLaboratorio(Laboratorio laboratorio) {
+    laboratorios.remove(laboratorio);
     filterLaboratorios();
   }
 
@@ -74,14 +77,13 @@ class LaboratorioController extends GetxController {
 
   void clonePeriodo(int origenId, int destinoId) async {
     // Implementa la lógica de clonación aquí
-    // Por ejemplo, podrías llamar a una API que haga la clonación
     try {
       // Aquí puedes implementar la llamada a la API para clonar el período
       // Ejemplo:
       // final response = await apiProvider.clonePeriodo(origenId, destinoId);
       // if (response.isSuccessful) {
       //   Get.snackbar('Success', 'Periodo clonado con éxito');
-      //   fetchCourses(); // Actualizar los datos después de la clonación
+      //   fetchLaboratorios(); // Actualizar los datos después de la clonación
       // } else {
       //   Get.snackbar('Error', 'No se pudo clonar el período');
       // }

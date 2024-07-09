@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/clone_periodo_dialog.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/new_laboratorio_dialog.dart';
 import '../controllers/laboratorio_controller.dart';
@@ -117,14 +118,8 @@ class LaboratorioPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return LaboratorioCard(
                           laboratorio: controller.filteredLaboratorios[index],
-                          onEdit: () {
-                            // Implementar lógica de edición
-                            print('Edit laboratorio: ${controller.filteredLaboratorios[index].cursoDescripcion}');
-                          },
                           onDelete: () {
-                            // Implementar lógica de eliminación
-                            print('Delete laboratorio: ${controller.filteredLaboratorios[index].cursoDescripcion}');
-                            controller.filteredLaboratorios.removeAt(index);
+                            _confirmDeleteLaboratorio(context, controller.filteredLaboratorios[index], controller);
                           },
                         );
                       },
@@ -144,7 +139,7 @@ class LaboratorioPage extends StatelessWidget {
             child: Icon(Icons.file_copy),
             label: 'Clonar Periodo',
             onTap: () {
-             showDialog(
+              showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return ClonePeriodoDialog(
@@ -160,12 +155,11 @@ class LaboratorioPage extends StatelessWidget {
             child: Icon(Icons.add),
             label: 'Nuevo Curso',
             onTap: () {
-               showDialog(
+              showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return NewLaboratorioDialog(
                     onAdd: (laboratorio) {
-                      // Implementar lógica para agregar el nuevo laboratorio
                       controller.addLaboratorio(laboratorio);
                     },
                   );
@@ -182,6 +176,31 @@ class LaboratorioPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _confirmDeleteLaboratorio(BuildContext context, Laboratorio laboratorio, LaboratorioController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Eliminación', style: GoogleFonts.montserrat()),
+          content: Text('¿Estás seguro de que deseas eliminar este laboratorio?', style: GoogleFonts.montserrat()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancelar', style: GoogleFonts.montserrat()),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.removeLaboratorio(laboratorio);
+                Navigator.of(context).pop();
+              },
+              child: Text('Eliminar', style: GoogleFonts.montserrat()),
+            ),
+          ],
+        );
+      },
     );
   }
 }

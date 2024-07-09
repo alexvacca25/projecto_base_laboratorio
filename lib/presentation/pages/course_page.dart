@@ -119,21 +119,15 @@ class CoursePage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return CourseCard(
                           course: controller.filteredCourses[index],
-                          onEdit: () {
-                            // Implementar lógica de edición
-                            print('Edit course: ${controller.filteredCourses[index].descripcion}');
-                          },
                           onDelete: () {
-                            // Implementar lógica de eliminación
-                            print('Delete course: ${controller.filteredCourses[index].descripcion}');
-                            controller.filteredCourses.removeAt(index);
+                            _confirmDeleteCourse(context, controller.filteredCourses[index], controller);
                           },
                           onAddCentroAtendido: (context, onAdd) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AddCentroAtendidoDialog(onAdd: (centroAtendido) {
-                                  controller.addCentroAtendido(index, centroAtendido); // Agregar el centro atendido al curso
+                                  controller.addCentroAtendido(controller.filteredCourses[index], centroAtendido);
                                 });
                               },
                             );
@@ -156,7 +150,7 @@ class CoursePage extends StatelessWidget {
             child: Icon(Icons.file_copy),
             label: 'Clonar Periodo',
             onTap: () {
-            showDialog(
+              showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return ClonePeriodoDialog(
@@ -177,7 +171,6 @@ class CoursePage extends StatelessWidget {
                 builder: (BuildContext context) {
                   return NewCourseDialog(
                     onAdd: (course) {
-                      // Implementar lógica para agregar el nuevo curso
                       controller.addCourse(course);
                     },
                   );
@@ -194,6 +187,31 @@ class CoursePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _confirmDeleteCourse(BuildContext context, Course course, CourseController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmar Eliminación', style: GoogleFonts.montserrat()),
+          content: Text('¿Estás seguro de que deseas eliminar este curso?', style: GoogleFonts.montserrat()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancelar', style: GoogleFonts.montserrat()),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.removeCourse(course);
+                Navigator.of(context).pop();
+              },
+              child: Text('Eliminar', style: GoogleFonts.montserrat()),
+            ),
+          ],
+        );
+      },
     );
   }
 }

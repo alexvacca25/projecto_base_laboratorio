@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LaboratorioCard extends StatelessWidget {
   final Laboratorio laboratorio;
-  final VoidCallback onEdit;
   final VoidCallback onDelete;
 
-  LaboratorioCard({required this.laboratorio, required this.onEdit, required this.onDelete});
+  LaboratorioCard({required this.laboratorio, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class LaboratorioCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DefaultTabController(
-              length: 2, // Número de pestañas
+              length: 2,
               child: Column(
                 children: [
                   TabBar(
@@ -29,21 +29,23 @@ class LaboratorioCard extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    height: 100, // Ajusta la altura según sea necesario
+                    height: 100,
                     child: TabBarView(
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${laboratorio.cursoDescripcion} ',
+                              '${laboratorio.cursoDescripcion}',
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            Text('Centro: ${laboratorio.nombreCead}',  
-                            maxLines: 1,
-                              overflow: TextOverflow.ellipsis,),
+                            Text(
+                              'Centro: ${laboratorio.nombreCead}',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                             Text('Estudiantes: ${laboratorio.estudiantesGrupo}'),
                             Text('Horas: ${laboratorio.horasGrupo}'),
                           ],
@@ -52,7 +54,7 @@ class LaboratorioCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Tipo: ${laboratorio.tipoLaboratorio ?? 'N/A'}'),
-                               Text('Ubicación: ${laboratorio.ubicacion ?? 'N/A'}'),
+                            Text('Ubicación: ${laboratorio.ubicacion ?? 'N/A'}'),
                             Text('Recurso: ${laboratorio.recurso ?? 'N/A'}'),
                           ],
                         ),
@@ -62,12 +64,12 @@ class LaboratorioCard extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(icon: Icon(Icons.edit), onPressed: onEdit),
-                IconButton(icon: Icon(Icons.delete), onPressed: onDelete),
-              ],
+            Align(
+              alignment: Alignment.bottomRight,
+              child: IconButton(
+                icon: Icon(Icons.delete, color: Colors.red),
+                onPressed: onDelete,
+              ),
             ),
           ],
         ),

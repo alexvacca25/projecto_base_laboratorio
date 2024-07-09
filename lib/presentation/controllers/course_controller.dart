@@ -6,7 +6,7 @@ import 'package:projecto_base_laboratorio/utils/excel_util.dart';
 
 class CourseController extends GetxController {
   final GetCourses getCourses;
-    final PeriodoController periodoController;
+  final PeriodoController periodoController;
 
   CourseController({required this.getCourses, required this.periodoController});
 
@@ -62,23 +62,32 @@ class CourseController extends GetxController {
     filterCourses();
   }
 
-  void addCentroAtendido(int courseIndex, CentroAtendido centroAtendido) {
-    courses[courseIndex].atiende.add(centroAtendido);
-    filterCourses();
+  void addCentroAtendido(Course course, CentroAtendido centroAtendido) {
+    course.atiende.add(centroAtendido);
+    courses.refresh();
   }
 
+  void removeCentroAtendido(Course course, CentroAtendido centroAtendido) {
+    course.atiende.remove(centroAtendido);
+    courses.refresh();
+  }
 
   void addCourse(Course course) {
     courses.add(course);
     filterCourses();
   }
 
-   void downloadExcel() {
+  void removeCourse(Course course) {
+    courses.remove(course);
+    filterCourses();
+  }
+
+  void downloadExcel() {
     downloadCourseExcel(courses);
   }
+
   void clonePeriodo(int origenId, int destinoId) async {
     // Implementa la lógica de clonación aquí
-    // Por ejemplo, podrías llamar a una API que haga la clonación
     try {
       // Aquí puedes implementar la llamada a la API para clonar el período
       // Ejemplo:
