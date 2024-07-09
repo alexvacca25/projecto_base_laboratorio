@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projecto_base_laboratorio/presentation/widgets/clone_periodo_dialog.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/new_laboratorio_dialog.dart';
 import '../controllers/laboratorio_controller.dart';
 import '../widgets/laboratorio_card.dart';
@@ -143,7 +144,16 @@ class LaboratorioPage extends StatelessWidget {
             child: Icon(Icons.file_copy),
             label: 'Clonar Periodo',
             onTap: () {
-              // Acción para clonar periodo
+             showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return ClonePeriodoDialog(
+                    onClone: (origenId, destinoId) {
+                      controller.clonePeriodo(origenId, destinoId);
+                    },
+                  );
+                },
+              );
             },
           ),
           SpeedDialChild(
@@ -167,7 +177,7 @@ class LaboratorioPage extends StatelessWidget {
             child: Icon(Icons.download),
             label: 'Descargar Excel',
             onTap: () {
-              // Acción para descargar excel
+              controller.downloadExcel();
             },
           ),
         ],

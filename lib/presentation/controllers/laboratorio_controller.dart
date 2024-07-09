@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:projecto_base_laboratorio/domain/usecases/get_laboratorios.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/periodo_controller.dart';
+import 'package:projecto_base_laboratorio/utils/excel_util.dart';
 
 class LaboratorioController extends GetxController {
   final GetLaboratorio getLaboratorios;
@@ -65,5 +66,27 @@ class LaboratorioController extends GetxController {
     void addLaboratorio(Laboratorio laboratorio) {
     laboratorios.add(laboratorio);
     filterLaboratorios();
+  }
+
+  void downloadExcel() {
+    downloadLaboratorioExcel(laboratorios);
+  }
+
+  void clonePeriodo(int origenId, int destinoId) async {
+    // Implementa la lógica de clonación aquí
+    // Por ejemplo, podrías llamar a una API que haga la clonación
+    try {
+      // Aquí puedes implementar la llamada a la API para clonar el período
+      // Ejemplo:
+      // final response = await apiProvider.clonePeriodo(origenId, destinoId);
+      // if (response.isSuccessful) {
+      //   Get.snackbar('Success', 'Periodo clonado con éxito');
+      //   fetchCourses(); // Actualizar los datos después de la clonación
+      // } else {
+      //   Get.snackbar('Error', 'No se pudo clonar el período');
+      // }
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudo clonar el período');
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/course_controller.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/add_centro_atendido_dialog.dart';
+import 'package:projecto_base_laboratorio/presentation/widgets/clone_periodo_dialog.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/course_card.dart';
 import 'package:projecto_base_laboratorio/data/models/course.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/new_course_dialog.dart';
@@ -155,7 +156,16 @@ class CoursePage extends StatelessWidget {
             child: Icon(Icons.file_copy),
             label: 'Clonar Periodo',
             onTap: () {
-              // Acción para clonar periodo
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return ClonePeriodoDialog(
+                    onClone: (origenId, destinoId) {
+                      controller.clonePeriodo(origenId, destinoId);
+                    },
+                  );
+                },
+              );
             },
           ),
           SpeedDialChild(
@@ -179,7 +189,7 @@ class CoursePage extends StatelessWidget {
             child: Icon(Icons.download),
             label: 'Descargar Excel',
             onTap: () {
-              // Acción para descargar excel
+              controller.downloadExcel();
             },
           ),
         ],
