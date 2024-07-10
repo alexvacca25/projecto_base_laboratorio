@@ -4,6 +4,7 @@ enum MenuItem {
   laboratorios,
   nodo_centro,
   laboratorio_curso,
+  curso_autodiridos,
 }
 
 class MenuOpController extends GetxController {
@@ -14,9 +15,12 @@ class MenuOpController extends GetxController {
       case MenuItem.laboratorios:
         return 'Laboratorios';
       case MenuItem.nodo_centro:
-        return 'Nodo Centro';
+        return 'Nodo Atendido Centro';
       case MenuItem.laboratorio_curso:
         return 'Laboratorio Curso';
+
+      case MenuItem.curso_autodiridos:
+        return 'Cursos Autodirigidos';
       default:
         return '';
     }

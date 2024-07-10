@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/course_page.dart';
+import 'package:projecto_base_laboratorio/presentation/pages/cursoauto_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/laboratorio_page.dart';
 import 'presentation/widgets/side_menu.dart';
 import 'presentation/controllers/menu_controller.dart';
@@ -48,8 +49,8 @@ class MyHomePage extends StatelessWidget {
             return LaboratorioPage();
           case MenuItem.nodo_centro:
             return CoursePage();
-          case MenuItem.laboratorio_curso:
-            return CoursePage();
+          case MenuItem.curso_autodiridos:
+            return CursoAutodirigidoPage();
           default:
             return Center(child: Text('Selecciona una opción del menú'));
         }

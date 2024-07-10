@@ -5,8 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/course_controller.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/add_centro_atendido_dialog.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/clone_periodo_dialog.dart';
-import 'package:projecto_base_laboratorio/presentation/widgets/course_card.dart';
+
 import 'package:projecto_base_laboratorio/data/models/course.dart';
+import 'package:projecto_base_laboratorio/presentation/widgets/course_card.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/new_course_dialog.dart';
 
 class CoursePage extends StatelessWidget {

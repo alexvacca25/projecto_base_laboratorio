@@ -90,7 +90,7 @@ class CourseCard extends StatelessWidget {
           ),
           SizedBox(height: 8.0),
           Text(
-            'Mod: ${course.tipo}',
+            'Modalidad: ${course.tipo}',
             style: GoogleFonts.montserrat(fontSize: 12),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

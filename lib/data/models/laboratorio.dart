@@ -11,7 +11,7 @@ class Laboratorio {
   final String? tipoLaboratorio;
   final String? ubicacion;
   final String? recurso;
-  final String tipo;
+  String tipo;  // Removed final keyword
   final String token;
 
   Laboratorio({

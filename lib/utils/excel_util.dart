@@ -1,4 +1,5 @@
 
+import 'package:projecto_base_laboratorio/data/models/cursoauto.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:excel/excel.dart';
@@ -89,6 +90,38 @@ void downloadLaboratorioExcel(List<Laboratorio> laboratorios) {
   final url = html.Url.createObjectUrlFromBlob(blob);
   final anchor = html.AnchorElement(href: url)
     ..setAttribute('download', 'laboratorios.xlsx')
+    ..click();
+  html.Url.revokeObjectUrl(url);
+}
+
+void downloadCursoAutodirigidoExcel(List<CursoAutodirigido> cursos) {
+  var excel = Excel.createExcel();
+  Sheet sheetObject = excel['Cursos Autodirigidos'];
+  sheetObject.appendRow([
+    'ID',
+    'Periodo',
+    'Curso',
+    'Consecutivo',
+    'Descripción',
+    'Escuela'
+  ]);
+
+  for (var curso in cursos) {
+    sheetObject.appendRow([
+      curso.id,
+      curso.periodo,
+      curso.curso,
+      curso.consecutivo,
+      curso.matDescripcion,
+      curso.escuelaDescripcion ?? '',
+    ]);
+  }
+
+  var fileBytes = excel.encode();
+  final blob = html.Blob([fileBytes], 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  final url = html.Url.createObjectUrlFromBlob(blob);
+  final anchor = html.AnchorElement(href: url)
+    ..setAttribute('download', 'CursosAutodirigidos.xlsx')
     ..click();
   html.Url.revokeObjectUrl(url);
 }

@@ -34,7 +34,7 @@ class LaboratorioController extends GetxController {
       laboratorios.value = result;
       filterLaboratorios();
     } catch (e) {
-      Get.snackbar('Laboratorios', 'Cargando...');
+      Get.snackbar('Error', 'Failed to load laboratorios');
     } finally {
       isLoading.value = false;
     }
@@ -52,8 +52,7 @@ class LaboratorioController extends GetxController {
       final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
       final matchZona = zona == 'Todos' || laboratorio.nombreZona == zona;
       final matchEscuela = escuela == 'Todos' || laboratorio.escuela == escuela;
-      final matchQuery = query.isEmpty || laboratorio.cursoDescripcion.toLowerCase().contains(query) ||
-          laboratorio.nombreCead.toLowerCase().contains(query);
+      final matchQuery = query.isEmpty || laboratorio.cursoDescripcion.toLowerCase().contains(query);
 
       return matchCentro && matchCurso && matchZona && matchEscuela && matchQuery;
     }).toList();
@@ -91,6 +90,12 @@ class LaboratorioController extends GetxController {
 
   void removeLaboratorio(Laboratorio laboratorio) {
     laboratorios.remove(laboratorio);
+    filterLaboratorios();
+  }
+
+  void updateTipo(Laboratorio laboratorio, String nuevoTipo) {
+    laboratorio.tipo = nuevoTipo;
+    laboratorios.refresh();
     filterLaboratorios();
   }
 

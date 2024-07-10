@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get_connect.dart';
 import 'package:http/http.dart' as http;
 import 'package:projecto_base_laboratorio/data/models/course.dart';
+import 'package:projecto_base_laboratorio/data/models/cursoauto.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 
 class ApiProvider extends GetConnect {
@@ -33,6 +34,16 @@ class ApiProvider extends GetConnect {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load periodos');
+    }
+  }
+
+    Future<List<CursoAutodirigido>> fetchCursosAutodirigidos(int periodoId) async {
+    final response = await http.get(Uri.parse('http://localhost:8000/cursosauto?id=$periodoId&token=123'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((curso) => CursoAutodirigido.fromJson(curso)).toList();
+    } else {
+      throw Exception('Failed to load cursos autodirigidos');
     }
   }
 }

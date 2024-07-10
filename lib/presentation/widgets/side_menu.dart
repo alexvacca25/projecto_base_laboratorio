@@ -56,9 +56,9 @@ class SideMenu extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.book),
-            title: Text('Primera Matricula', style: GoogleFonts.montserrat()),
+            title: Text('Cursos Autodirigidos', style: GoogleFonts.montserrat()),
             onTap: () {
-              menuController.selectedItem.value = MenuItem.laboratorio_curso;
+              menuController.selectedItem.value = MenuItem.curso_autodiridos;
               Navigator.of(context).pop();
             },
           ),
