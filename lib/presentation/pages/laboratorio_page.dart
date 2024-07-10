@@ -91,6 +91,19 @@ class LaboratorioPage extends StatelessWidget {
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Buscar',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: (value) {
+                controller.setSearchQuery(value);
+              },
+            ),
+          ),
           Expanded(
             child: Obx(() {
               if (controller.isLoading.value) {

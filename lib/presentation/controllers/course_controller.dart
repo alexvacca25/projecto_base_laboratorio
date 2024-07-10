@@ -15,6 +15,7 @@ class CourseController extends GetxController {
   var isLoading = true.obs;
   var selectedCentro = 'Todos'.obs;
   var selectedCurso = 'Todos'.obs;
+  var searchQuery = ''.obs;
 
   @override
   void onInit() {
@@ -41,13 +42,16 @@ class CourseController extends GetxController {
   void filterCourses() {
     var centro = selectedCentro.value;
     var curso = selectedCurso.value;
-    if (centro == 'Todos' && curso == 'Todos') {
+    var query = searchQuery.value.toLowerCase();
+    if (centro == 'Todos' && curso == 'Todos' && query.isEmpty) {
       filteredCourses.value = courses;
     } else {
       filteredCourses.value = courses.where((course) {
         final matchCentro = centro == 'Todos' || course.nombreCentroPrincipal == centro;
         final matchCurso = curso == 'Todos' || course.descripcion == curso;
-        return matchCentro && matchCurso;
+        final matchQuery = course.descripcion.toLowerCase().contains(query) ||
+            course.nombreCentroPrincipal.toLowerCase().contains(query);
+        return matchCentro && matchCurso && matchQuery;
       }).toList();
     }
   }
@@ -62,14 +66,21 @@ class CourseController extends GetxController {
     filterCourses();
   }
 
+  void setSearchQuery(String query) {
+    searchQuery.value = query;
+    filterCourses();
+  }
+
   void addCentroAtendido(Course course, CentroAtendido centroAtendido) {
     course.atiende.add(centroAtendido);
     courses.refresh();
+    filterCourses();
   }
 
   void removeCentroAtendido(Course course, CentroAtendido centroAtendido) {
     course.atiende.remove(centroAtendido);
     courses.refresh();
+    filterCourses();
   }
 
   void addCourse(Course course) {
@@ -83,7 +94,7 @@ class CourseController extends GetxController {
   }
 
   void downloadExcel() {
-    downloadCourseExcel(courses);
+    downloadCourseExcel(filteredCourses);
   }
 
   void clonePeriodo(int origenId, int destinoId) async {

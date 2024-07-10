@@ -15,6 +15,7 @@ class LaboratorioController extends GetxController {
   var isLoading = true.obs;
   var selectedCentro = 'Todos'.obs;
   var selectedCurso = 'Todos'.obs;
+  var searchQuery = ''.obs;
 
   @override
   void onInit() {
@@ -40,15 +41,14 @@ class LaboratorioController extends GetxController {
   void filterLaboratorios() {
     var centro = selectedCentro.value;
     var curso = selectedCurso.value;
-    if (centro == 'Todos' && curso == 'Todos') {
-      filteredLaboratorios.value = laboratorios;
-    } else {
-      filteredLaboratorios.value = laboratorios.where((laboratorio) {
-        final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
-        final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
-        return matchCentro && matchCurso;
-      }).toList();
-    }
+    var query = searchQuery.value.toLowerCase();
+    filteredLaboratorios.value = laboratorios.where((laboratorio) {
+      final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
+      final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
+      final matchQuery = laboratorio.cursoDescripcion.toLowerCase().contains(query) ||
+          laboratorio.nombreCead.toLowerCase().contains(query);
+      return matchCentro && matchCurso && matchQuery;
+    }).toList();
   }
 
   void setSelectedCentro(String centro) {
@@ -58,6 +58,11 @@ class LaboratorioController extends GetxController {
 
   void setSelectedCurso(String curso) {
     selectedCurso.value = curso;
+    filterLaboratorios();
+  }
+
+  void setSearchQuery(String query) {
+    searchQuery.value = query;
     filterLaboratorios();
   }
 
@@ -72,7 +77,7 @@ class LaboratorioController extends GetxController {
   }
 
   void downloadExcel() {
-    downloadLaboratorioExcel(laboratorios);
+    downloadLaboratorioExcel(filteredLaboratorios);
   }
 
   void clonePeriodo(int origenId, int destinoId) async {
@@ -83,7 +88,7 @@ class LaboratorioController extends GetxController {
       // final response = await apiProvider.clonePeriodo(origenId, destinoId);
       // if (response.isSuccessful) {
       //   Get.snackbar('Success', 'Periodo clonado con éxito');
-      //   fetchLaboratorios(); // Actualizar los datos después de la clonación
+      //   fetchLaboratorios();
       // } else {
       //   Get.snackbar('Error', 'No se pudo clonar el período');
       // }
