@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:projecto_base_laboratorio/domain/usecases/get_laboratorios.dart';
@@ -103,18 +105,28 @@ class LaboratorioController extends GetxController {
     downloadLaboratorioExcel(filteredLaboratorios);
   }
 
-  void clonePeriodo(int origenId, int destinoId) async {
-    // Implementa la lógica de clonación aquí
+ void clonePeriodo(int origenId, int destinoId) async {
+    final token = "123";
+    final url = 'http://localhost:8000/clonarlab?token=$token&origen=$origenId&destino=$destinoId';
+
     try {
-      // Aquí puedes implementar la llamada a la API para clonar el período
-      // Ejemplo:
-      // final response = await apiProvider.clonePeriodo(origenId, destinoId);
-      // if (response.isSuccessful) {
-      //   Get.snackbar('Success', 'Periodo clonado con éxito');
-      //   fetchLaboratorios(); // Actualizar los datos después de la clonación
-      // } else {
-      //   Get.snackbar('Error', 'No se pudo clonar el período');
-      // }
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final registrosAfectados = data['registrosAfectados'];
+         Get.snackbar(
+          'Éxito',
+          'Se clonaron $registrosAfectados registros.',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 5), // Duración del Snackbar
+          
+          
+        );
+        fetchLaboratorios(); // Actualizar los datos después de la clonación
+      } else {
+        Get.snackbar('Error', 'No se pudo clonar el período. Código de estado: ${response.statusCode}');
+      }
     } catch (e) {
       Get.snackbar('Error', 'No se pudo clonar el período');
     }
