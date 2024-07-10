@@ -26,6 +26,7 @@ class _NewLaboratorioDialogState extends State<NewLaboratorioDialog> {
   final TextEditingController _recursoController = TextEditingController();
   final TextEditingController _estudiantesGrupoController = TextEditingController();
   final TextEditingController _horasGrupoController = TextEditingController();
+  final TextEditingController _tipoLaboratorioController = TextEditingController(); // Nuevo campo
 
   Future<void> _fetchData(String id, String type) async {
     final token = "123"; // Token por defecto
@@ -72,6 +73,7 @@ class _NewLaboratorioDialogState extends State<NewLaboratorioDialog> {
             _buildDialogTextField(_nombrePeriodoController, 'Nombre del Periodo', TextInputType.text, false, null),
             _buildDialogTextField(_estudiantesGrupoController, 'Número de Estudiantes', TextInputType.number, true, null),
             _buildDialogTextField(_horasGrupoController, 'Horas del Grupo', TextInputType.number, true, null),
+            _buildDialogTextField(_tipoLaboratorioController, 'Tipo de Laboratorio', TextInputType.text, false, null), // Nuevo campo
             _buildDialogTextField(_tipoController, 'Tipo (Opcional)', TextInputType.text, false, null),
             _buildDialogTextField(_ubicacionController, 'Ubicación (Opcional)', TextInputType.text, false, null),
             _buildDialogTextField(_recursoController, 'Recurso (Opcional)', TextInputType.text, false, null),
@@ -96,11 +98,14 @@ class _NewLaboratorioDialogState extends State<NewLaboratorioDialog> {
                 id: DateTime.now().millisecondsSinceEpoch.toDouble(), // ID generado automáticamente
                 idCurso: double.parse(_idCursoController.text),
                 cursoDescripcion: _nombreCursoController.text,
+                escuela: '', // No se incluye en la creación
                 centro: int.parse(_idCentroController.text),
                 nombreCead: _nombreCentroController.text,
+                nombreZona: '', // No se incluye en la creación
                 estudiantesGrupo: int.parse(_estudiantesGrupoController.text),
                 horasGrupo: double.parse(_horasGrupoController.text),
-                tipoLaboratorio: _tipoController.text,
+                tipoLaboratorio: _tipoLaboratorioController.text, // Nuevo campo
+                tipo: _tipoController.text,
                 ubicacion: _ubicacionController.text,
                 recurso: _recursoController.text,
                 token: '123', // Token por defecto

@@ -22,87 +22,186 @@ class CoursePage extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: Obx(() {
-                        List<String> centros = ['Todos'];
-                        centros.addAll(controller.courses.map((course) => course.nombreCentroPrincipal).toSet().toList());
-                        return DropdownButton<String>(
-                          isExpanded: true,
-                          value: controller.selectedCentro.value,
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              controller.setSelectedCentro(newValue);
-                            }
-                          },
-                          items: centros.map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value, style: GoogleFonts.montserrat(fontSize: 14)),
-                            );
-                          }).toList(),
-                        );
-                      }),
-                    ),
-                  ),
+            child: TextField(
+              onChanged: (value) => controller.setSearchQuery(value),
+              decoration: InputDecoration(
+                labelText: 'Buscar',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: Obx(() {
-                        List<String> cursos = ['Todos'];
-                        cursos.addAll(controller.courses.map((course) => course.descripcion).toSet().toList());
-                        return DropdownButton<String>(
-                          isExpanded: true,
-                          value: controller.selectedCurso.value,
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              controller.setSelectedCurso(newValue);
-                            }
-                          },
-                          items: cursos.map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value, style: GoogleFonts.montserrat(fontSize: 14)),
-                            );
-                          }).toList(),
-                        );
-                      }),
-                    ),
-                  ),
-                ),
-              ],
+                contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              ),
+              style: GoogleFonts.montserrat(fontSize: 12),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Buscar',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: (value) {
-                controller.setSearchQuery(value);
-              },
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Centro:', style: GoogleFonts.montserrat(fontSize: 12)),
+                          Container(
+                            height: 35,
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: Obx(() {
+                                List<String> centros = ['Todos'];
+                                centros.addAll(controller.courses.map((course) => course.nombreCentroPrincipal).toSet().toList());
+                                return DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: controller.selectedCentro.value,
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null) {
+                                      controller.setSelectedCentro(newValue);
+                                    }
+                                  },
+                                  items: centros.map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value, style: GoogleFonts.montserrat(fontSize: 12)),
+                                    );
+                                  }).toList(),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Curso:', style: GoogleFonts.montserrat(fontSize: 12)),
+                          Container(
+                            height: 35,
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: Obx(() {
+                                List<String> cursos = ['Todos'];
+                                cursos.addAll(controller.courses.map((course) => course.descripcion).toSet().toList());
+                                return DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: controller.selectedCurso.value,
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null) {
+                                      controller.setSelectedCurso(newValue);
+                                    }
+                                  },
+                                  items: cursos.map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value, style: GoogleFonts.montserrat(fontSize: 12)),
+                                    );
+                                  }).toList(),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Zona:', style: GoogleFonts.montserrat(fontSize: 12)),
+                          Container(
+                            height: 35,
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: Obx(() {
+                                List<String> zonas = ['Todos'];
+                                zonas.addAll(controller.courses.map((course) => course.zona).toSet().toList());
+                                return DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: controller.selectedZona.value,
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null) {
+                                      controller.setSelectedZona(newValue);
+                                    }
+                                  },
+                                  items: zonas.map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value, style: GoogleFonts.montserrat(fontSize: 12)),
+                                    );
+                                  }).toList(),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Escuela:', style: GoogleFonts.montserrat(fontSize: 12)),
+                          Container(
+                            height: 35,
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: Obx(() {
+                                List<String> escuelas = ['Todos'];
+                                escuelas.addAll(controller.courses.map((course) => course.escuela).toSet().toList());
+                                return DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: controller.selectedEscuela.value,
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null) {
+                                      controller.setSelectedEscuela(newValue);
+                                    }
+                                  },
+                                  items: escuelas.map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value, style: GoogleFonts.montserrat(fontSize: 12)),
+                                    );
+                                  }).toList(),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           Expanded(

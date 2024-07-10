@@ -48,7 +48,7 @@ class SideMenu extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.school),
-            title: Text('Nodo Centro', style: GoogleFonts.montserrat()),
+            title: Text('Nodo Atendido Centro', style: GoogleFonts.montserrat()),
             onTap: () {
               menuController.selectedItem.value = MenuItem.nodo_centro;
               Navigator.of(context).pop();
@@ -56,7 +56,7 @@ class SideMenu extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.book),
-            title: Text('Laboratorio Curso', style: GoogleFonts.montserrat()),
+            title: Text('Primera Matricula', style: GoogleFonts.montserrat()),
             onTap: () {
               menuController.selectedItem.value = MenuItem.laboratorio_curso;
               Navigator.of(context).pop();

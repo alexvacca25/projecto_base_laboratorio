@@ -16,7 +16,10 @@ void downloadCourseExcel(List<Course> courses) {
     'Nombre del Centro Principal',
     'Estudiantes',
     'Horas',
-    'Centros Atendidos'
+    'Centros Atendidos',
+    'Escuela',
+    'Zona',
+    'Tipo'
   ]);
 
   for (var course in courses) {
@@ -29,6 +32,9 @@ void downloadCourseExcel(List<Course> courses) {
       course.estudiantes,
       course.horas,
       course.atiende.map((e) => e.nombreCentroAtendido).join(', '),
+      course.escuela,
+      course.zona,
+      course.tipo
     ]);
   }
 
@@ -54,7 +60,10 @@ void downloadLaboratorioExcel(List<Laboratorio> laboratorios) {
     'Horas Grupo',
     'Tipo Laboratorio',
     'Ubicación',
-    'Recurso'
+    'Recurso',
+    'Nombre Zona',
+    'Escuela',
+    'Tipo'
   ]);
 
   for (var laboratorio in laboratorios) {
@@ -69,6 +78,9 @@ void downloadLaboratorioExcel(List<Laboratorio> laboratorios) {
       laboratorio.tipoLaboratorio ?? '',
       laboratorio.ubicacion ?? '',
       laboratorio.recurso ?? '',
+      laboratorio.nombreZona,
+      laboratorio.escuela,
+      laboratorio.tipo
     ]);
   }
 

@@ -1,12 +1,16 @@
 class Course {
-  int id;
-  int curso;
-  String descripcion;
-  int centro;
-  String nombreCentroPrincipal;
-  int estudiantes;
-  int horas;
-  List<CentroAtendido> atiende;
+  final int id;
+  final int curso;
+  final String descripcion;
+  final int centro;
+  final String nombreCentroPrincipal;
+  final int estudiantes;
+  final int horas;
+  final int periodo;
+  final List<CentroAtendido> atiende;
+  final String zona;
+  final String escuela;
+  final String tipo;
 
   Course({
     required this.id,
@@ -16,7 +20,11 @@ class Course {
     required this.nombreCentroPrincipal,
     required this.estudiantes,
     required this.horas,
+    required this.periodo,
     required this.atiende,
+    required this.zona,
+    required this.escuela,
+    required this.tipo,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
@@ -31,13 +39,15 @@ class Course {
       nombreCentroPrincipal: json['nombre_centro_principal'],
       estudiantes: json['estudiantes'],
       horas: json['horas'],
+      periodo: json['periodo'],
       atiende: atiendeList,
+      zona: json['zona'],
+      escuela: json['escuela'],
+      tipo: json['tipo'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    List<Map<String, dynamic>> atiendeList = this.atiende.map((i) => i.toJson()).toList();
-
     return {
       'id': id,
       'curso': curso,
@@ -46,14 +56,18 @@ class Course {
       'nombre_centro_principal': nombreCentroPrincipal,
       'estudiantes': estudiantes,
       'horas': horas,
-      'atiende': atiendeList,
+      'periodo': periodo,
+      'atiende': atiende.map((e) => e.toJson()).toList(),
+      'zona': zona,
+      'escuela': escuela,
+      'tipo': tipo,
     };
   }
 }
 
 class CentroAtendido {
-  int centroAtender;
-  String nombreCentroAtendido;
+  final int centroAtender;
+  final String nombreCentroAtendido;
 
   CentroAtendido({
     required this.centroAtender,

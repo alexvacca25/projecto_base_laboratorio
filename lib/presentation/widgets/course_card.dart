@@ -77,14 +77,21 @@ class CourseCard extends StatelessWidget {
         children: [
           Text(
             course.descripcion,
-            style: GoogleFonts.montserrat(fontSize: 14),
+            style: GoogleFonts.montserrat(fontSize: 12),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
           SizedBox(height: 8.0),
           Text(
             'Centro: ${course.nombreCentroPrincipal}',
-            style: GoogleFonts.montserrat(fontSize: 14),
+            style: GoogleFonts.montserrat(fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+          SizedBox(height: 8.0),
+          Text(
+            'Mod: ${course.tipo}',
+            style: GoogleFonts.montserrat(fontSize: 12),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -93,16 +100,16 @@ class CourseCard extends StatelessWidget {
             children: [
               Text(
                 'Estudiantes: ${course.estudiantes}',
-                style: GoogleFonts.montserrat(fontSize: 14),
+                style: GoogleFonts.montserrat(fontSize: 12),
               ),
-              SizedBox(width: 16),
+              SizedBox(width: 8),
               Text(
                 'Horas: ${course.horas}',
-                style: GoogleFonts.montserrat(fontSize: 14),
+                style: GoogleFonts.montserrat(fontSize: 12),
               ),
             ],
           ),
-          Spacer(),
+          SizedBox(height: 8.0),
           Align(
             alignment: Alignment.bottomRight,
             child: IconButton(
@@ -117,27 +124,25 @@ class CourseCard extends StatelessWidget {
 
   Widget _buildCentrosAtendidosTab(BuildContext context, CourseController controller) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       child: Stack(
         children: [
-         
-         Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
-                  spacing: 4.0,
-                  runSpacing: 2.0,
-                  children: course.atiende.map((centro) {
-                    return Chip(
-                      label: Text(centro.nombreCentroAtendido, style: GoogleFonts.montserrat(fontSize: 12)),
-                      deleteIcon: Icon(Icons.close, size: 16),
-                      onDeleted: () => _confirmDeleteCentroAtendido(context, centro, controller),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-         
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                spacing: 4.0,
+                runSpacing: 2.0,
+                children: course.atiende.map((centro) {
+                  return Chip(
+                    label: Text(centro.nombreCentroAtendido, style: GoogleFonts.montserrat(fontSize: 12)),
+                    deleteIcon: Icon(Icons.close, size: 16),
+                    onDeleted: () => _confirmDeleteCentroAtendido(context, centro, controller),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
           Positioned(
             bottom: 0,
             right: 0,
@@ -146,7 +151,7 @@ class CourseCard extends StatelessWidget {
               onPressed: () => onAddCentroAtendido(context, (centro) {
                 controller.addCentroAtendido(course, centro);
               }),
-              child: Icon(Icons.add),
+              child: Icon(Icons.add, size: 16),
             ),
           ),
         ],

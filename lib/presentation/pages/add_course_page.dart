@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projecto_base_laboratorio/data/models/course.dart';
 
-
 class AddCoursePage extends StatefulWidget {
   final Function(Course) onAdd;
 
@@ -20,6 +19,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
   final _nombreCentroPrincipalController = TextEditingController();
   final _estudiantesController = TextEditingController();
   final _horasController = TextEditingController();
+  final _idPeriodoController = TextEditingController();
   final List<CentroAtendido> _centrosAtendidos = [];
 
   @override
@@ -39,6 +39,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
                 _buildTextField(_descripcionController, 'Descripción', TextInputType.text),
                 _buildTextField(_centroController, 'Centro ID', TextInputType.number),
                 _buildTextField(_nombreCentroPrincipalController, 'Nombre del Centro Principal', TextInputType.text),
+                _buildTextField(_idPeriodoController, 'ID del Periodo', TextInputType.number),
                 Row(
                   children: [
                     Expanded(child: _buildTextField(_estudiantesController, 'Estudiantes', TextInputType.number)),
@@ -178,7 +179,11 @@ class _AddCoursePageState extends State<AddCoursePage> {
         nombreCentroPrincipal: _nombreCentroPrincipalController.text,
         estudiantes: int.parse(_estudiantesController.text),
         horas: int.parse(_horasController.text),
+        periodo: int.parse(_idPeriodoController.text),
         atiende: _centrosAtendidos,
+        zona: '', // No se incluye en la creación
+        escuela: '', // No se incluye en la creación
+        tipo: '', // No se incluye en la creación
       );
       widget.onAdd(newCourse);
       Navigator.of(context).pop();

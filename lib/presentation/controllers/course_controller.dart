@@ -15,6 +15,8 @@ class CourseController extends GetxController {
   var isLoading = true.obs;
   var selectedCentro = 'Todos'.obs;
   var selectedCurso = 'Todos'.obs;
+  var selectedZona = 'Todos'.obs;
+  var selectedEscuela = 'Todos'.obs;
   var searchQuery = ''.obs;
 
   @override
@@ -42,18 +44,21 @@ class CourseController extends GetxController {
   void filterCourses() {
     var centro = selectedCentro.value;
     var curso = selectedCurso.value;
+    var zona = selectedZona.value;
+    var escuela = selectedEscuela.value;
     var query = searchQuery.value.toLowerCase();
-    if (centro == 'Todos' && curso == 'Todos' && query.isEmpty) {
-      filteredCourses.value = courses;
-    } else {
-      filteredCourses.value = courses.where((course) {
-        final matchCentro = centro == 'Todos' || course.nombreCentroPrincipal == centro;
-        final matchCurso = curso == 'Todos' || course.descripcion == curso;
-        final matchQuery = course.descripcion.toLowerCase().contains(query) ||
-            course.nombreCentroPrincipal.toLowerCase().contains(query);
-        return matchCentro && matchCurso && matchQuery;
-      }).toList();
-    }
+
+    filteredCourses.value = courses.where((course) {
+      final matchCentro = centro == 'Todos' || course.nombreCentroPrincipal == centro;
+      final matchCurso = curso == 'Todos' || course.descripcion == curso;
+      final matchZona = zona == 'Todos' || course.zona == zona;
+      final matchEscuela = escuela == 'Todos' || course.escuela == escuela;
+      final matchQuery = course.descripcion.toLowerCase().contains(query) ||
+                         course.nombreCentroPrincipal.toLowerCase().contains(query) ||
+                         course.zona.toLowerCase().contains(query) ||
+                         course.escuela.toLowerCase().contains(query);
+      return matchCentro && matchCurso && matchZona && matchEscuela && matchQuery;
+    }).toList();
   }
 
   void setSelectedCentro(String centro) {
@@ -63,6 +68,16 @@ class CourseController extends GetxController {
 
   void setSelectedCurso(String curso) {
     selectedCurso.value = curso;
+    filterCourses();
+  }
+
+  void setSelectedZona(String zona) {
+    selectedZona.value = zona;
+    filterCourses();
+  }
+
+  void setSelectedEscuela(String escuela) {
+    selectedEscuela.value = escuela;
     filterCourses();
   }
 

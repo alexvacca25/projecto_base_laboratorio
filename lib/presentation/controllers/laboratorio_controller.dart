@@ -15,6 +15,8 @@ class LaboratorioController extends GetxController {
   var isLoading = true.obs;
   var selectedCentro = 'Todos'.obs;
   var selectedCurso = 'Todos'.obs;
+  var selectedZona = 'Todos'.obs;
+  var selectedEscuela = 'Todos'.obs;
   var searchQuery = ''.obs;
 
   @override
@@ -32,7 +34,7 @@ class LaboratorioController extends GetxController {
       laboratorios.value = result;
       filterLaboratorios();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load laboratorios');
+      Get.snackbar('Laboratorios', 'Cargando...');
     } finally {
       isLoading.value = false;
     }
@@ -41,13 +43,19 @@ class LaboratorioController extends GetxController {
   void filterLaboratorios() {
     var centro = selectedCentro.value;
     var curso = selectedCurso.value;
+    var zona = selectedZona.value;
+    var escuela = selectedEscuela.value;
     var query = searchQuery.value.toLowerCase();
+
     filteredLaboratorios.value = laboratorios.where((laboratorio) {
       final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
       final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
-      final matchQuery = laboratorio.cursoDescripcion.toLowerCase().contains(query) ||
+      final matchZona = zona == 'Todos' || laboratorio.nombreZona == zona;
+      final matchEscuela = escuela == 'Todos' || laboratorio.escuela == escuela;
+      final matchQuery = query.isEmpty || laboratorio.cursoDescripcion.toLowerCase().contains(query) ||
           laboratorio.nombreCead.toLowerCase().contains(query);
-      return matchCentro && matchCurso && matchQuery;
+
+      return matchCentro && matchCurso && matchZona && matchEscuela && matchQuery;
     }).toList();
   }
 
@@ -58,6 +66,16 @@ class LaboratorioController extends GetxController {
 
   void setSelectedCurso(String curso) {
     selectedCurso.value = curso;
+    filterLaboratorios();
+  }
+
+  void setSelectedZona(String zona) {
+    selectedZona.value = zona;
+    filterLaboratorios();
+  }
+
+  void setSelectedEscuela(String escuela) {
+    selectedEscuela.value = escuela;
     filterLaboratorios();
   }
 
@@ -88,7 +106,7 @@ class LaboratorioController extends GetxController {
       // final response = await apiProvider.clonePeriodo(origenId, destinoId);
       // if (response.isSuccessful) {
       //   Get.snackbar('Success', 'Periodo clonado con éxito');
-      //   fetchLaboratorios();
+      //   fetchLaboratorios(); // Actualizar los datos después de la clonación
       // } else {
       //   Get.snackbar('Error', 'No se pudo clonar el período');
       // }
