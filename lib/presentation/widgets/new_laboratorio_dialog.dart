@@ -28,17 +28,31 @@ class _NewLaboratorioDialogState extends State<NewLaboratorioDialog> {
   final TextEditingController _horasGrupoController = TextEditingController();
   final TextEditingController _tipoLaboratorioController = TextEditingController(); // Nuevo campo
 
-  Future<void> _fetchData(String id, String type) async {
-    final token = "123"; // Token por defecto
-    String url = '';
-    if (type == 'curso') {
-      url = 'http://localhost:8000/curso?id=$id&token=$token';
-    } else if (type == 'centro') {
-      url = 'http://localhost:8000/centro?id=$id&token=$token';
-    } else if (type == 'periodo') {
-      url = 'http://localhost:8000/periodo?id=$id&token=$token';
-    }
 
+Future<void> _fetchData(String id, String type) async {
+  final token = "123"; // Token por defecto
+  String url = '';
+
+  // Limpiar los controladores de texto antes de la solicitud HTTP
+  setState(() {
+    if (type == 'curso') {
+      _nombreCursoController.clear();
+    } else if (type == 'centro') {
+      _nombreCentroController.clear();
+    } else if (type == 'periodo') {
+      _nombrePeriodoController.clear();
+    }
+  });
+
+  if (type == 'curso') {
+    url = 'http://localhost:8000/curso?id=$id&token=$token';
+  } else if (type == 'centro') {
+    url = 'http://localhost:8000/centro?id=$id&token=$token';
+  } else if (type == 'periodo') {
+    url = 'http://localhost:8000/periodo?id=$id&token=$token';
+  }
+
+  try {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -55,7 +69,11 @@ class _NewLaboratorioDialogState extends State<NewLaboratorioDialog> {
     } else {
       print('Error fetching $type: ${response.statusCode}');
     }
+  } catch (e) {
+    print('Error fetching $type: $e');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +84,14 @@ class _NewLaboratorioDialogState extends State<NewLaboratorioDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildDialogTextField(_idCursoController, 'ID del Curso', TextInputType.number, true, 'curso'),
-            _buildDialogTextField(_nombreCursoController, 'Nombre del Curso', TextInputType.text, false, null),
+            _buildDialogTextField(_nombreCursoController, 'Nombre del Curso', TextInputType.text, false, null,escribir: true),
             _buildDialogTextField(_idCentroController, 'ID del Centro', TextInputType.number, true, 'centro'),
-            _buildDialogTextField(_nombreCentroController, 'Nombre del Centro', TextInputType.text, false, null),
+            _buildDialogTextField(_nombreCentroController, 'Nombre del Centro', TextInputType.text, false, null, escribir: true),
             _buildDialogTextField(_idPeriodoController, 'ID del Periodo', TextInputType.number, true, 'periodo'),
-            _buildDialogTextField(_nombrePeriodoController, 'Nombre del Periodo', TextInputType.text, false, null),
+            _buildDialogTextField(_nombrePeriodoController, 'Nombre del Periodo', TextInputType.text, false, null, escribir: true),
             _buildDialogTextField(_estudiantesGrupoController, 'Número de Estudiantes', TextInputType.number, true, null),
             _buildDialogTextField(_horasGrupoController, 'Horas del Grupo', TextInputType.number, true, null),
-            _buildDialogTextField(_tipoLaboratorioController, 'Tipo de Laboratorio', TextInputType.text, false, null), // Nuevo campo
+          /*   _buildDialogTextField(_tipoLaboratorioController, 'Tipo de Laboratorio', TextInputType.text, false, null),  */// Nuevo campo
             _buildDialogTextField(_tipoController, 'Tipo (Opcional)', TextInputType.text, false, null),
             _buildDialogTextField(_ubicacionController, 'Ubicación (Opcional)', TextInputType.text, false, null),
             _buildDialogTextField(_recursoController, 'Recurso (Opcional)', TextInputType.text, false, null),
@@ -104,7 +122,7 @@ class _NewLaboratorioDialogState extends State<NewLaboratorioDialog> {
                 nombreZona: '', // No se incluye en la creación
                 estudiantesGrupo: int.parse(_estudiantesGrupoController.text),
                 horasGrupo: double.parse(_horasGrupoController.text),
-                tipoLaboratorio: _tipoLaboratorioController.text, // Nuevo campo
+                tipoLaboratorio: '', // Nuevo campo
                 tipo: _tipoController.text,
                 ubicacion: _ubicacionController.text,
                 recurso: _recursoController.text,
@@ -120,24 +138,28 @@ class _NewLaboratorioDialogState extends State<NewLaboratorioDialog> {
   }
 
   Widget _buildDialogTextField(TextEditingController controller, String labelText, TextInputType keyboardType,
-      bool isNumeric, String? type) {
+      bool isNumeric, String? type,{bool escribir=false}) {
     return Padding(
+      
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
+        readOnly: escribir,
         controller: controller,
         inputFormatters: isNumeric ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly] : null,
         enabled: true,
         decoration: InputDecoration(
+          enabled: escribir,
           labelText: labelText,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
         ),
         keyboardType: keyboardType,
-        onFieldSubmitted: (value) {
+        onChanged: (value) {
           if (type != null) {
             _fetchData(value, type); // Validar y obtener datos del curso, centro o periodo
           }
+        
         },
       ),
     );

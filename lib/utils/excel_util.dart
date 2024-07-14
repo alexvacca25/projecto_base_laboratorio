@@ -32,7 +32,7 @@ void downloadCourseExcel(List<Course> courses) {
       course.nombreCentroPrincipal,
       course.estudiantes,
       course.horas,
-      course.atiende.map((e) => e.nombreCentroAtendido).join(', '),
+      course.atiende.map((e) => '${e.nombreCentroAtendido} (${e.centroAtender})').join(', '),
       course.escuela,
       course.zona,
       course.tipo

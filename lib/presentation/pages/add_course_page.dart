@@ -138,6 +138,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
                 if (_nombreCentroController.text.isNotEmpty && _idCentroController.text.isNotEmpty) {
                   setState(() {
                     _centrosAtendidos.add(CentroAtendido(
+                      idCentroAtender:int.parse(_idCentroController.text),
                       centroAtender: int.parse(_idCentroController.text),
                       nombreCentroAtendido: _nombreCentroController.text,
                     ));

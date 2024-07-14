@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Course {
   final int id;
   final int curso;
@@ -66,16 +68,19 @@ class Course {
 }
 
 class CentroAtendido {
+  final int idCentroAtender;
   final int centroAtender;
   final String nombreCentroAtendido;
 
   CentroAtendido({
+    required this.idCentroAtender,
     required this.centroAtender,
     required this.nombreCentroAtendido,
   });
 
   factory CentroAtendido.fromJson(Map<String, dynamic> json) {
     return CentroAtendido(
+      idCentroAtender:json['idCentroAtender'],
       centroAtender: json['centro_atender'],
       nombreCentroAtendido: json['nombre_centro_atendido'],
     );
@@ -83,6 +88,7 @@ class CentroAtendido {
 
   Map<String, dynamic> toJson() {
     return {
+      'idCentroAtender': centroAtender,
       'centro_atender': centroAtender,
       'nombre_centro_atendido': nombreCentroAtendido,
     };

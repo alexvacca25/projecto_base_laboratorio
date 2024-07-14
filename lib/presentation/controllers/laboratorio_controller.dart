@@ -36,7 +36,7 @@ class LaboratorioController extends GetxController {
       laboratorios.value = result;
       filterLaboratorios();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load laboratorios');
+      Get.snackbar('Laboratorios', 'Cargando Datos...');
     } finally {
       isLoading.value = false;
     }
@@ -85,13 +85,84 @@ class LaboratorioController extends GetxController {
     filterLaboratorios();
   }
 
-  void addLaboratorio(Laboratorio laboratorio) {
-    laboratorios.add(laboratorio);
-    filterLaboratorios();
+  void addLaboratorio(Laboratorio laboratorio) async {
+    /* laboratorios.add(laboratorio);
+    filterLaboratorios(); */
+  final token = "123";
+  final url = 'http://localhost:8000/addlab';
+
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+    "curso": laboratorio.idCurso,
+    "centro": laboratorio.centro,
+    "estudiantes_grupo": laboratorio.estudiantesGrupo,
+    "horas_grupo": laboratorio.horasGrupo,
+    "tipo_laboratorio": null,
+    "ubicacion": null,
+    "recurso": null,
+    "periodo": 1704,
+    "estado": 0,
+	  "token":"123"
+        
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final registrosAfectados = data['registrosAfectados'];
+      Get.snackbar(
+        'Cursos Laboratorio',
+        'Se Registraron: $registrosAfectados registros.',
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 5), // Duración del Snackbar
+      );
+      fetchLaboratorios(); // Actualizar los datos después de la eliminación
+    } else {
+      Get.snackbar(
+        'Error',
+        'No se pudo Agregar el Centro. Código de estado: ${response.statusCode}',
+      );
+    }
+  } catch (e) {
+    Get.snackbar(
+      'Error',
+      'No se pudo Agregar el Centro',
+    );
+  }
   }
 
-  void removeLaboratorio(Laboratorio laboratorio) {
-    laboratorios.remove(laboratorio);
+  void removeLaboratorio(Laboratorio laboratorio) async {
+    /* laboratorios.remove(laboratorio);
+    filterLaboratorios(); */
+    final token = "123";
+    final url = 'http://localhost:8000/quitar?origen=soca2015.laboratorios_cursos_centro&id=${laboratorio.id}&token=$token';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final registrosAfectados = data['registrosAfectados'];
+         Get.snackbar(
+          'Cursos Laboratorio ',
+          'Se Retiro: $registrosAfectados registros.',
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 5), // Duración del Snackbar
+          
+          
+        );
+        fetchLaboratorios(); // Actualizar los datos después de la clonación
+      } else {
+        Get.snackbar('Error', 'No se pudo Quitar el CEntro. Código de estado: ${response.statusCode}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudo Quitar el Centro');
+    }
     filterLaboratorios();
   }
 
@@ -118,7 +189,7 @@ class LaboratorioController extends GetxController {
          Get.snackbar(
           'Éxito',
           'Se clonaron $registrosAfectados registros.',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           duration: const Duration(seconds: 5), // Duración del Snackbar
           
           

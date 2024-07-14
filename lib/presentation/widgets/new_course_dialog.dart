@@ -23,18 +23,38 @@ class _NewCourseDialogState extends State<NewCourseDialog> {
   final TextEditingController _nombrePeriodoController = TextEditingController();
   final TextEditingController _estudiantesController = TextEditingController();
   final TextEditingController _horasController = TextEditingController();
+  final TextEditingController _centroAtendidoController = TextEditingController();
+  final TextEditingController _nombreCaController = TextEditingController();
 
-  Future<void> _fetchData(String id, String type) async {
-    final token = "123"; // Token por defecto
-    String url = '';
+Future<void> _fetchData(String id, String type) async {
+  final token = "123"; // Token por defecto
+  String url = '';
+
+  // Limpiar los controladores de texto antes de la solicitud HTTP
+  setState(() {
     if (type == 'curso') {
-      url = 'http://localhost:8000/curso?id=$id&token=$token';
+      _nombreCursoController.clear();
     } else if (type == 'centro') {
-      url = 'http://localhost:8000/centro?id=$id&token=$token';
+      _nombreCentroController.clear();
     } else if (type == 'periodo') {
-      url = 'http://localhost:8000/periodo?id=$id&token=$token';
+      _nombrePeriodoController.clear();
+    } else if (type == 'centroa') {
+      _nombreCaController.clear();
     }
+  });
 
+  if (type == 'curso') {
+    url = 'http://localhost:8000/curso?id=$id&token=$token';
+  } else if (type == 'centro') {
+    url = 'http://localhost:8000/centro?id=$id&token=$token';
+  } else if (type == 'periodo') {
+    url = 'http://localhost:8000/periodo?id=$id&token=$token';
+  }else if (type == 'centroa') {
+    url = 'http://localhost:8000/centro?id=$id&token=$token';
+  }
+  
+
+  try {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -46,12 +66,17 @@ class _NewCourseDialogState extends State<NewCourseDialog> {
           _nombreCentroController.text = data['descripcion'];
         } else if (type == 'periodo') {
           _nombrePeriodoController.text = data['descripcion'];
+        }else if (type == 'centroa') {
+          _nombreCaController.text = data['descripcion'];
         }
       });
     } else {
       print('Error fetching $type: ${response.statusCode}');
     }
+  } catch (e) {
+    print('Error fetching $type: $e');
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +87,15 @@ class _NewCourseDialogState extends State<NewCourseDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildDialogTextField(_idCursoController, 'ID del Curso', TextInputType.number, true, 'curso'),
-            _buildDialogTextField(_nombreCursoController, 'Nombre del Curso', TextInputType.text, false, null),
+            _buildDialogTextField(_nombreCursoController, 'Nombre del Curso', TextInputType.text, false, null,escribir: true),
             _buildDialogTextField(_idCentroController, 'ID del Centro', TextInputType.number, true, 'centro'),
-            _buildDialogTextField(_nombreCentroController, 'Nombre del Centro', TextInputType.text, false, null),
+            _buildDialogTextField(_nombreCentroController, 'Nombre del Centro', TextInputType.text, false, null,escribir: true),
             _buildDialogTextField(_idPeriodoController, 'ID del Periodo', TextInputType.number, true, 'periodo'),
-            _buildDialogTextField(_nombrePeriodoController, 'Nombre del Periodo', TextInputType.text, false, null),
+            _buildDialogTextField(_nombrePeriodoController, 'Nombre del Periodo', TextInputType.text, false, null, escribir: true),
             _buildDialogTextField(_estudiantesController, 'Número de Estudiantes', TextInputType.number, true, null),
             _buildDialogTextField(_horasController, 'Horas del Grupo', TextInputType.number, true, null),
+             _buildDialogTextField(_centroAtendidoController, 'ID del Centro Atendido', TextInputType.number, true, 'centroa'),
+            _buildDialogTextField(_nombreCaController, 'Nombre del Centro', TextInputType.text, false, null,escribir: true),
           ],
         ),
       ),
@@ -95,7 +122,9 @@ class _NewCourseDialogState extends State<NewCourseDialog> {
                 estudiantes: int.parse(_estudiantesController.text),
                 horas: int.parse(_horasController.text),
                 periodo: int.parse(_idPeriodoController.text),
-                atiende: [], // Lista vacía al crear nuevo curso
+                atiende: [ CentroAtendido(idCentroAtender: int.parse(_centroAtendidoController.text), centroAtender:int.parse(_centroAtendidoController.text) , nombreCentroAtendido: _nombreCaController.text)
+                 
+                ], // Lista vacía al crear nuevo curso
                 zona: '', // No se incluye en la creación
                 escuela: '', // No se incluye en la creación
                 tipo: '', // No se incluye en la creación
@@ -110,10 +139,11 @@ class _NewCourseDialogState extends State<NewCourseDialog> {
   }
 
   Widget _buildDialogTextField(TextEditingController controller, String labelText, TextInputType keyboardType,
-      bool isNumeric, String? type) {
+      bool isNumeric, String? type,{bool escribir=false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
+        readOnly: escribir,
         controller: controller,
         inputFormatters: isNumeric ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly] : null,
         enabled: true,
@@ -124,7 +154,7 @@ class _NewCourseDialogState extends State<NewCourseDialog> {
           ),
         ),
         keyboardType: keyboardType,
-        onFieldSubmitted: (value) {
+        onChanged: (value) {
           if (type != null) {
             _fetchData(value, type); // Validar y obtener datos del curso, centro o periodo
           }

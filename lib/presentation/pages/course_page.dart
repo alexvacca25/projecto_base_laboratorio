@@ -17,7 +17,7 @@ class CoursePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Laboratorio Nodo Centro', style: GoogleFonts.montserrat()),
+        title: Text('Nodo Atendido por Centro', style: GoogleFonts.montserrat()),
       ),
       body: Column(
         children: [

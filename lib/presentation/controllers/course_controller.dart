@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/data/models/course.dart';
+
 import 'package:projecto_base_laboratorio/domain/usecases/get_courses.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/periodo_controller.dart';
 import 'package:projecto_base_laboratorio/utils/excel_util.dart';
@@ -87,20 +90,93 @@ class CourseController extends GetxController {
   }
 
   void addCentroAtendido(Course course, CentroAtendido centroAtendido) {
+    course.atiende.clear();
     course.atiende.add(centroAtendido);
+    addCourse(course);
     courses.refresh();
     filterCourses();
   }
 
-  void removeCentroAtendido(Course course, CentroAtendido centroAtendido) {
-    course.atiende.remove(centroAtendido);
+  void removeCentroAtendido(Course course, CentroAtendido centroAtendido) async {
+   /*  course.atiende.remove(centroAtendido);
     courses.refresh();
+    filterCourses(); */
+
+     final token = "123";
+    final url = 'http://localhost:8000/quitar?origen=soca2015.laboratorios_cursos_nocentro&id=${centroAtendido.idCentroAtender}&token=$token';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final registrosAfectados = data['registrosAfectados'];
+         Get.snackbar(
+          'Centro Atendio',
+          'Se Retiro: $registrosAfectados registros.',
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 5), // Duración del Snackbar
+          
+          
+        );
+        fetchCourses(); // Actualizar los datos después de la clonación
+      } else {
+        Get.snackbar('Error', 'No se pudo Quitar el CEntro. Código de estado: ${response.statusCode}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudo Quitar el Centro');
+    }
     filterCourses();
   }
 
-  void addCourse(Course course) {
-    courses.add(course);
-    filterCourses();
+  void addCourse(Course course) async {
+    /* courses.add(course);
+    filterCourses(); */
+      /* laboratorios.add(laboratorio);
+    filterLaboratorios(); */
+  final token = "123";
+  final url = 'http://localhost:8000/addnodo';
+
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+    "curso": course.curso,
+    "centro": course.centro,
+    "centro_atender": course.atiende[0].centroAtender,
+    "estudiantes": course.estudiantes,
+    "horas": course.horas,
+    "periodo": 1704,
+            
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final registrosAfectados = data['registrosAfectados'];
+      Get.snackbar(
+        'Nodos Atendidos en Centro',
+        'Se Registraron: $registrosAfectados registros.',
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 5), // Duración del Snackbar
+      );
+      fetchCourses(); // Actualizar los datos después de la eliminación
+    } else {
+      Get.snackbar(
+        'Error',
+        'No se pudo Agregar el Centro. Código de estado: ${response.statusCode}',
+      );
+    }
+  } catch (e) {
+    Get.snackbar(
+      'Error',
+      'No se pudo Agregar el Centro',
+    );
+  }
+  filterCourses();
   }
 
   void removeCourse(Course course) {
@@ -112,18 +188,29 @@ class CourseController extends GetxController {
     downloadCourseExcel(filteredCourses);
   }
 
-  void clonePeriodo(int origenId, int destinoId) async {
-    // Implementa la lógica de clonación aquí
+  
+ void clonePeriodo(int origenId, int destinoId) async {
+    final token = "123";
+    final url = 'http://localhost:8000/clonarnodo?token=$token&origen=$origenId&destino=$destinoId';
+
     try {
-      // Aquí puedes implementar la llamada a la API para clonar el período
-      // Ejemplo:
-      // final response = await apiProvider.clonePeriodo(origenId, destinoId);
-      // if (response.isSuccessful) {
-      //   Get.snackbar('Success', 'Periodo clonado con éxito');
-      //   fetchCourses(); // Actualizar los datos después de la clonación
-      // } else {
-      //   Get.snackbar('Error', 'No se pudo clonar el período');
-      // }
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final registrosAfectados = data['registrosAfectados'];
+         Get.snackbar(
+          'Éxito',
+          'Se clonaron $registrosAfectados registros.',
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 5), // Duración del Snackbar
+          
+          
+        );
+        fetchCourses(); // Actualizar los datos después de la clonación
+      } else {
+        Get.snackbar('Error', 'No se pudo clonar el período. Código de estado: ${response.statusCode}');
+      }
     } catch (e) {
       Get.snackbar('Error', 'No se pudo clonar el período');
     }

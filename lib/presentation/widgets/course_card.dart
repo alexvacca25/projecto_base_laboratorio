@@ -109,14 +109,14 @@ class CourseCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 8.0),
+          /* SizedBox(height: 8.0),
           Align(
             alignment: Alignment.bottomRight,
             child: IconButton(
               icon: Icon(Icons.delete, color: Colors.red),
               onPressed: onDelete,
             ),
-          ),
+          ), */
         ],
       ),
     );

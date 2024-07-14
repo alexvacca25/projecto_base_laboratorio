@@ -54,6 +54,7 @@ class _AddCentroAtendidoDialogState extends State<AddCentroAtendidoDialog> {
           onPressed: () {
             if (_nombreCentroController.text.isNotEmpty && _idCentroController.text.isNotEmpty) {
               widget.onAdd(CentroAtendido(
+                idCentroAtender: int.parse(_idCentroController.text),
                 centroAtender: int.parse(_idCentroController.text),
                 nombreCentroAtendido: _nombreCentroController.text,
               ));
