@@ -3,21 +3,24 @@ import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/course_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/cursoauto_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/laboratorio_page.dart';
+import 'package:projecto_base_laboratorio/utils/token_validator.dart';
 import 'presentation/widgets/side_menu.dart';
 import 'presentation/controllers/menu_controller.dart';
 import 'presentation/controllers/periodo_controller.dart';
 import 'presentation/bindings/course_binding.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Parametros Cursos',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -25,12 +28,41 @@ class MyApp extends StatelessWidget {
         Get.put(MenuController());
         CourseBinding().dependencies();
       }),
-      home: MyHomePage(),
+      home:  TokenValidationWrapper(),
+    );
+  }
+}
+
+class TokenValidationWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: TokenValidator.validateToken(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError || !TokenValidator.isTokenValid) {
+          return Scaffold(
+            body: Center(
+              child: Text(
+                'Error: Token no válido. Por favor, inicie sesión de nuevo.',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          );
+        } else {
+          return MyHomePage();
+        }
+      },
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final MenuOpController menuController = Get.find();

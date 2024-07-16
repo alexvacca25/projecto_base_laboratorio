@@ -12,3 +12,5 @@ mkdir lib\presentation\widgets
 type nul > lib\main.dart
 echo Estructura de carpetas creada exitosamente.
 pause
+flutter build web --output="C:\Users\EquipoPC\Documents\Proyectos2024\FrontEnd\sighum-frontend-new-main\src\app\protected\modules\soca-project\soca\parametros_av"
+flutter build web --output="C:\Users\EquipoPC\Documents\Proyectos2024\FrontEnd\sighum-frontend-new-main\src\assets\parametros_av"

@@ -127,8 +127,8 @@ class CourseCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          ListView(
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Wrap(
                 spacing: 4.0,
@@ -136,7 +136,7 @@ class CourseCard extends StatelessWidget {
                 children: course.atiende.map((centro) {
                   return Chip(
                     label: Text(centro.nombreCentroAtendido, style: GoogleFonts.montserrat(fontSize: 12)),
-                    deleteIcon: Icon(Icons.close, size: 16),
+                    deleteIcon:const Icon(Icons.close, size: 16),
                     onDeleted: () => _confirmDeleteCentroAtendido(context, centro, controller),
                   );
                 }).toList(),
