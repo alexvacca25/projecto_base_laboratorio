@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:projecto_base_laboratorio/config.dart';
 import 'package:projecto_base_laboratorio/data/models/course.dart';
 
 import 'package:projecto_base_laboratorio/domain/usecases/get_courses.dart';
@@ -103,7 +104,7 @@ class CourseController extends GetxController {
     filterCourses(); */
 
      final token = "123";
-    final url = 'http://localhost:8000/quitar?origen=soca2015.laboratorios_cursos_nocentro&id=${centroAtendido.idCentroAtender}&token=$token';
+    final url = '${Config.baseUrl}/quitar?origen=soca2015.laboratorios_cursos_nocentro&id=${centroAtendido.idCentroAtender}&token=$token';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -135,7 +136,7 @@ class CourseController extends GetxController {
       /* laboratorios.add(laboratorio);
     filterLaboratorios(); */
   final token = "123";
-  final url = 'http://localhost:8000/addnodo';
+  final url = '${Config.baseUrl}/addnodo';
 
   try {
     final response = await http.post(
@@ -149,7 +150,7 @@ class CourseController extends GetxController {
     "centro_atender": course.atiende[0].centroAtender,
     "estudiantes": course.estudiantes,
     "horas": course.horas,
-    "periodo": 1704,
+    "periodo": periodoController.selectedPeriodoId.value,
             
       }),
     );
@@ -191,7 +192,7 @@ class CourseController extends GetxController {
   
  void clonePeriodo(int origenId, int destinoId) async {
     final token = "123";
-    final url = 'http://localhost:8000/clonarnodo?token=$token&origen=$origenId&destino=$destinoId';
+    final url = '${Config.baseUrl}/clonarnodo?token=$token&origen=$origenId&destino=$destinoId';
 
     try {
       final response = await http.get(Uri.parse(url));

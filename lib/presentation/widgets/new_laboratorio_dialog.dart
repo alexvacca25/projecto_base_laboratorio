@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projecto_base_laboratorio/config.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -45,11 +46,11 @@ Future<void> _fetchData(String id, String type) async {
   });
 
   if (type == 'curso') {
-    url = 'http://localhost:8000/curso?id=$id&token=$token';
+    url = '${Config.baseUrl}/curso?id=$id&token=$token';
   } else if (type == 'centro') {
-    url = 'http://localhost:8000/centro?id=$id&token=$token';
+    url = '${Config.baseUrl}/centro?id=$id&token=$token';
   } else if (type == 'periodo') {
-    url = 'http://localhost:8000/periodo?id=$id&token=$token';
+    url = '${Config.baseUrl}/periodo?id=$id&token=$token';
   }
 
   try {

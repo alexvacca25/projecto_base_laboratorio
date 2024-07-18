@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projecto_base_laboratorio/config.dart';
 import 'package:projecto_base_laboratorio/data/models/course.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -20,7 +21,7 @@ class _AddCentroAtendidoDialogState extends State<AddCentroAtendidoDialog> {
 
   Future<void> _fetchCentro(String id) async {
     final token = "123"; // Token por defecto
-    final response = await http.get(Uri.parse('http://localhost:8000/centro?id=$id&token=$token'));
+    final response = await http.get(Uri.parse('${Config.baseUrl}/centro?id=$id&token=$token'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

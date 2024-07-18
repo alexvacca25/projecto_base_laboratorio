@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:projecto_base_laboratorio/config.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:projecto_base_laboratorio/domain/usecases/get_laboratorios.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/periodo_controller.dart';
@@ -89,7 +90,7 @@ class LaboratorioController extends GetxController {
     /* laboratorios.add(laboratorio);
     filterLaboratorios(); */
   final token = "123";
-  final url = 'http://localhost:8000/addlab';
+  final url = '${Config.baseUrl}/addlab';
 
   try {
     final response = await http.post(
@@ -105,7 +106,7 @@ class LaboratorioController extends GetxController {
     "tipo_laboratorio": null,
     "ubicacion": null,
     "recurso": null,
-    "periodo": 1704,
+    "periodo": periodoController.selectedPeriodoId.value,
     "estado": 0,
 	  "token":"123"
         
@@ -140,7 +141,7 @@ class LaboratorioController extends GetxController {
     /* laboratorios.remove(laboratorio);
     filterLaboratorios(); */
     final token = "123";
-    final url = 'http://localhost:8000/quitar?origen=soca2015.laboratorios_cursos_centro&id=${laboratorio.id}&token=$token';
+    final url = '${Config.baseUrl}/quitar?origen=soca2015.laboratorios_cursos_centro&id=${laboratorio.id}&token=$token';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -178,7 +179,7 @@ class LaboratorioController extends GetxController {
 
  void clonePeriodo(int origenId, int destinoId) async {
     final token = "123";
-    final url = 'http://localhost:8000/clonarlab?token=$token&origen=$origenId&destino=$destinoId';
+    final url = '${Config.baseUrl}/clonarlab?token=$token&origen=$origenId&destino=$destinoId';
 
     try {
       final response = await http.get(Uri.parse(url));

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:projecto_base_laboratorio/config.dart';
 import 'dart:convert';
 
 import 'package:projecto_base_laboratorio/data/models/cursoauto.dart';
@@ -26,9 +27,9 @@ class _NewCursoAutodirigidoDialogState extends State<NewCursoAutodirigidoDialog>
     final token = "123"; // Token por defecto
     String url = '';
     if (type == 'curso') {
-      url = 'http://localhost:8000/curso?id=$id&token=$token';
+      url = '${Config.baseUrl}/curso?id=$id&token=$token';
     } else if (type == 'periodo') {
-      url = 'http://localhost:8000/periodo?id=$id&token=$token';
+      url = '${Config.baseUrl}/periodo?id=$id&token=$token';
     }
 
     final response = await http.get(Uri.parse(url));
