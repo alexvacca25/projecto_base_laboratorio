@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projecto_base_laboratorio/presentation/pages/ReportesLaboratorioPage.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/course_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/cursoauto_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/laboratorio_page.dart';
@@ -81,6 +82,8 @@ class MyHomePage extends StatelessWidget {
             return LaboratorioPage();
           case MenuItem.nodo_centro:
             return CoursePage();
+          case MenuItem.reportes_componente:
+            return ReportesLaboratorioPage();
           case MenuItem.curso_autodiridos:
             return CursoAutodirigidoPage();
           default:

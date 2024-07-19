@@ -125,3 +125,27 @@ void downloadCursoAutodirigidoExcel(List<CursoAutodirigido> cursos) {
     ..click();
   html.Url.revokeObjectUrl(url);
 }
+
+
+void downloadExcel(List<dynamic> data, String fileName) {
+  var excel = Excel.createExcel();
+  Sheet sheetObject = excel[fileName.split('.')[0]];
+
+  if (data.isNotEmpty) {
+    // Add headers
+    sheetObject.appendRow(data[0].keys.toList());
+
+    // Add rows
+    for (var item in data) {
+      sheetObject.appendRow(item.values.toList());
+    }
+  }
+
+  var fileBytes = excel.encode();
+  final blob = html.Blob([fileBytes], 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  final url = html.Url.createObjectUrlFromBlob(blob);
+  final anchor = html.AnchorElement(href: url)
+    ..setAttribute('download', fileName)
+    ..click();
+  html.Url.revokeObjectUrl(url);
+}

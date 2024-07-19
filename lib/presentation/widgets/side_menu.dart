@@ -54,6 +54,14 @@ class SideMenu extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
+           ListTile(
+            leading: Icon(Icons.grading_sharp),
+            title: Text('Reportes Componente Practico', style: GoogleFonts.montserrat()),
+            onTap: () {
+              menuController.selectedItem.value = MenuItem.reportes_componente;
+              Navigator.of(context).pop();
+            },
+          ),
           ListTile(
             leading: Icon(Icons.book),
             title: Text('Cursos Autodirigidos', style: GoogleFonts.montserrat()),

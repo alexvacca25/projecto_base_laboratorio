@@ -56,8 +56,10 @@ class CoursePage extends StatelessWidget {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: Obx(() {
-                                List<String> centros = ['Todos'];
+                                List<String> centros = [];
                                 centros.addAll(controller.courses.map((course) => course.nombreCentroPrincipal).toSet().toList());
+                                centros.sort((a, b) => a.compareTo(b)); // Ordenar alfabéticamente
+                                centros.insert(0, 'Todos');
                                 return DropdownButton<String>(
                                   isExpanded: true,
                                   value: controller.selectedCentro.value,
@@ -95,8 +97,10 @@ class CoursePage extends StatelessWidget {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: Obx(() {
-                                List<String> cursos = ['Todos'];
+                                List<String> cursos = [];
                                 cursos.addAll(controller.courses.map((course) => course.descripcion).toSet().toList());
+                                cursos.sort((a, b) => a.compareTo(b)); // Ordenar alfabéticamente
+                                cursos.insert(0, 'Todos');
                                 return DropdownButton<String>(
                                   isExpanded: true,
                                   value: controller.selectedCurso.value,
@@ -138,8 +142,10 @@ class CoursePage extends StatelessWidget {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: Obx(() {
-                                List<String> zonas = ['Todos'];
+                                List<String> zonas = [];
                                 zonas.addAll(controller.courses.map((course) => course.zona).toSet().toList());
+                                zonas.sort((a, b) => a.compareTo(b)); // Ordenar alfabéticamente
+                                zonas.insert(0, 'Todos');
                                 return DropdownButton<String>(
                                   isExpanded: true,
                                   value: controller.selectedZona.value,
@@ -177,8 +183,10 @@ class CoursePage extends StatelessWidget {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: Obx(() {
-                                List<String> escuelas = ['Todos'];
+                                List<String> escuelas = [];
                                 escuelas.addAll(controller.courses.map((course) => course.escuela).toSet().toList());
+                                escuelas.sort((a, b) => a.compareTo(b)); // Ordenar alfabéticamente
+                                escuelas.insert(0, 'Todos');
                                 return DropdownButton<String>(
                                   isExpanded: true,
                                   value: controller.selectedEscuela.value,

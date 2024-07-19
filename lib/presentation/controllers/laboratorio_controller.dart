@@ -42,24 +42,25 @@ class LaboratorioController extends GetxController {
       isLoading.value = false;
     }
   }
+  
+void filterLaboratorios() {
+  var centro = selectedCentro.value;
+  var curso = selectedCurso.value;
+  var zona = selectedZona.value;
+  var escuela = selectedEscuela.value;
+  var query = searchQuery.value.toLowerCase();
 
-  void filterLaboratorios() {
-    var centro = selectedCentro.value;
-    var curso = selectedCurso.value;
-    var zona = selectedZona.value;
-    var escuela = selectedEscuela.value;
-    var query = searchQuery.value.toLowerCase();
+  filteredLaboratorios.value = laboratorios.where((laboratorio) {
+    final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
+    final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
+    final matchZona = zona == 'Todos' || laboratorio.nombreZona == zona;
+    final matchEscuela = escuela == 'Todos' || laboratorio.escuela == escuela;
+    final matchQuery = query.isEmpty || laboratorio.cursoDescripcion.toLowerCase().contains(query);
 
-    filteredLaboratorios.value = laboratorios.where((laboratorio) {
-      final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
-      final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
-      final matchZona = zona == 'Todos' || laboratorio.nombreZona == zona;
-      final matchEscuela = escuela == 'Todos' || laboratorio.escuela == escuela;
-      final matchQuery = query.isEmpty || laboratorio.cursoDescripcion.toLowerCase().contains(query);
-
-      return matchCentro && matchCurso && matchZona && matchEscuela && matchQuery;
-    }).toList();
-  }
+    return matchCentro && matchCurso && matchZona && matchEscuela && matchQuery;
+  }).toList()
+  ..sort((a, b) => a.cursoDescripcion.compareTo(b.cursoDescripcion)); // Ordenar alfabéticamente
+}
 
   void setSelectedCentro(String centro) {
     selectedCentro.value = centro;
