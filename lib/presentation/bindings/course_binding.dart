@@ -14,28 +14,41 @@ import 'package:projecto_base_laboratorio/presentation/controllers/cursoauto_con
 import 'package:projecto_base_laboratorio/presentation/controllers/laboratorio_controller.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/menu_controller.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/periodo_controller.dart';
-
+import 'package:projecto_base_laboratorio/presentation/controllers/referencia_controller.dart';
 
 class CourseBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ApiProvider>(() => ApiProvider());
 
-    Get.lazyPut<PeriodoController>(() => PeriodoController(apiProvider: Get.find()));
+    Get.lazyPut<PeriodoController>(
+        () => PeriodoController(apiProvider: Get.find()));
 
-    Get.lazyPut<CourseRepository>(() => CourseRepositoryImpl(apiProvider: Get.find()));
-    Get.lazyPut<GetCourses>(() => GetCourses(repository: Get.find(),));
-    Get.lazyPut<CourseController>(() => CourseController(getCourses: Get.find(), periodoController: Get.find()));
-    
+    Get.lazyPut<CourseRepository>(
+        () => CourseRepositoryImpl(apiProvider: Get.find()));
+    Get.lazyPut<GetCourses>(() => GetCourses(
+          repository: Get.find(),
+        ));
+    Get.lazyPut<CourseController>(() => CourseController(
+        getCourses: Get.find(), periodoController: Get.find()));
+
     Get.lazyPut<MenuOpController>(() => MenuOpController());
-    
-    Get.lazyPut<LaboratorioRepository>(() => LaboratorioRepositoyImp(apiProvider: Get.find()));
+
+    Get.lazyPut<LaboratorioRepository>(
+        () => LaboratorioRepositoyImp(apiProvider: Get.find()));
     Get.lazyPut<GetLaboratorio>(() => GetLaboratorio(repository: Get.find()));
-    Get.lazyPut<LaboratorioController>(() => LaboratorioController(getLaboratorios: Get.find(), periodoController: Get.find()));
-  
-    Get.lazyPut<CursoAutodirigidoRepository>(() => CursoAutodirigidoRepositoryImpl(apiProvider: Get.find()));
-    Get.lazyPut<GetCursosAutodirigidos>(() => GetCursosAutodirigidos(repository: Get.find()));
-    Get.lazyPut<CursoAutodirigidoController>(() => CursoAutodirigidoController(periodoController: Get.find(), getCursosAutodirigidos: Get.find()),);
-  
+    Get.lazyPut<LaboratorioController>(() => LaboratorioController(
+        getLaboratorios: Get.find(), periodoController: Get.find()));
+
+    Get.lazyPut<CursoAutodirigidoRepository>(
+        () => CursoAutodirigidoRepositoryImpl(apiProvider: Get.find()));
+    Get.lazyPut<GetCursosAutodirigidos>(
+        () => GetCursosAutodirigidos(repository: Get.find()));
+    Get.lazyPut<CursoAutodirigidoController>(
+      () => CursoAutodirigidoController(
+          periodoController: Get.find(), getCursosAutodirigidos: Get.find()),
+    );
+
+    Get.lazyPut(() => ReferenciaController(apiProvider: Get.find()));
   }
 }

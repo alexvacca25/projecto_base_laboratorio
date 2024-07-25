@@ -5,6 +5,7 @@ enum MenuItem {
   nodo_centro,
   laboratorio_curso,
   curso_autodiridos,
+  parametros_referencias,
   reportes_componente,
 }
 
@@ -21,7 +22,8 @@ class MenuOpController extends GetxController {
         return 'Reportes Componente Practico';
       case MenuItem.laboratorio_curso:
         return 'Laboratorio Curso';
-
+      case MenuItem.parametros_referencias:
+        return 'Parametros Referencias';
       case MenuItem.curso_autodiridos:
         return 'Cursos Autodirigidos';
       default:

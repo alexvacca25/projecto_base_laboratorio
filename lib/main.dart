@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/ReportesLaboratorioPage.dart';
+import 'package:projecto_base_laboratorio/presentation/pages/actividades_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/course_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/cursoauto_page.dart';
 import 'package:projecto_base_laboratorio/presentation/pages/laboratorio_page.dart';
@@ -11,7 +12,7 @@ import 'presentation/controllers/periodo_controller.dart';
 import 'presentation/bindings/course_binding.dart';
 
 void main() {
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         Get.put(MenuController());
         CourseBinding().dependencies();
       }),
-      home:  TokenValidationWrapper(),
+      home: MyHomePage(),
     );
   }
 }
@@ -72,7 +73,8 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Obx(() {
-          return Text('${menuController.selectedItemName} - ${periodoController.selectedPeriodoDescription}');
+          return Text(
+              '${menuController.selectedItemName} - ${periodoController.selectedPeriodoDescription}');
         }),
       ),
       drawer: SideMenu(),
@@ -84,6 +86,8 @@ class MyHomePage extends StatelessWidget {
             return CoursePage();
           case MenuItem.reportes_componente:
             return ReportesLaboratorioPage();
+          case MenuItem.parametros_referencias:
+            return ParametrosReferenciasPage();
           case MenuItem.curso_autodiridos:
             return CursoAutodirigidoPage();
           default:
