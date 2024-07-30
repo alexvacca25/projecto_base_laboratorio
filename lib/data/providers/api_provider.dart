@@ -8,6 +8,7 @@ import 'package:projecto_base_laboratorio/data/models/course.dart';
 import 'package:projecto_base_laboratorio/data/models/cursoauto.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:projecto_base_laboratorio/data/models/mensajes.dart';
+import 'package:projecto_base_laboratorio/utils/local_storage_util.dart';
 
 class ApiProvider extends GetConnect {
 /*  @override
@@ -42,10 +43,16 @@ class ApiProvider extends GetConnect {
   }
 
   Future<List<dynamic>> fetchPeriodos() async {
+    final token = LocalStorageUtil.read('token');
+    print(token);
     final response =
-        await http.get(Uri.parse('${Config.baseUrl}/periodosall?token=123'));
+        await http.get(Uri.parse('${Config.baseUrl}/periodosall?token=$token'));
+    print(response.body);
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      var resultjson = json.decode(response.body);
+      LocalStorageUtil.write('token', resultjson['new_token']);
+      print(resultjson);
+      return resultjson['data'];
     } else {
       throw Exception('Cargando...');
     }

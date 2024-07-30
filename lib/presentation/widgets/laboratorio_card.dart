@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/laboratorio_controller.dart';
+import 'package:projecto_base_laboratorio/presentation/widgets/editar_laboratorio_dialog.dart';
 
 class LaboratorioCard extends StatelessWidget {
   final Laboratorio laboratorio;
@@ -56,7 +57,7 @@ class LaboratorioCard extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  _buildDetailsTab(context),
+                  _buildDetailsTab(context, controller),
                   _buildOtrosTab(context, controller),
                 ],
               ),
@@ -67,7 +68,7 @@ class LaboratorioCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailsTab(BuildContext context) {
+  Widget _buildDetailsTab(BuildContext context, LaboratorioController controller) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -103,9 +104,25 @@ class LaboratorioCard extends StatelessWidget {
           Spacer(),
           Align(
             alignment: Alignment.bottomRight,
-            child: IconButton(
-              icon: Icon(Icons.delete, color: Colors.red),
-              onPressed: onDelete,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.edit, color: Colors.blue),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return EditarLaboratorioDialog(laboratorio: laboratorio);
+                      },
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete, color: Colors.red),
+                  onPressed: onDelete,
+                ),
+              ],
             ),
           ),
         ],

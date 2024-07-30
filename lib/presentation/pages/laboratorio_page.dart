@@ -6,6 +6,7 @@ import 'package:projecto_base_laboratorio/data/models/laboratorio.dart';
 import 'package:projecto_base_laboratorio/presentation/controllers/laboratorio_controller.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/clone_periodo_dialog.dart';
 import 'package:projecto_base_laboratorio/presentation/widgets/new_laboratorio_dialog.dart';
+
 import '../widgets/laboratorio_card.dart';
 
 class LaboratorioPage extends StatelessWidget {
@@ -28,7 +29,8 @@ class LaboratorioPage extends StatelessWidget {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
               ),
               style: GoogleFonts.montserrat(fontSize: 12),
             ),
@@ -43,7 +45,8 @@ class LaboratorioPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Centro:', style: GoogleFonts.montserrat(fontSize: 12)),
+                          Text('Centro:',
+                              style: GoogleFonts.montserrat(fontSize: 12)),
                           Container(
                             height: 35,
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -55,8 +58,13 @@ class LaboratorioPage extends StatelessWidget {
                             child: DropdownButtonHideUnderline(
                               child: Obx(() {
                                 List<String> centros = [];
-                                centros.addAll(controller.laboratorios.map((laboratorio) => laboratorio.nombreCead).toSet().toList());
-                                centros.sort((a, b) => a.compareTo(b)); // Ordenar alfabéticamente
+                                centros.addAll(controller.laboratorios
+                                    .map(
+                                        (laboratorio) => laboratorio.nombreCead)
+                                    .toSet()
+                                    .toList());
+                                centros.sort((a, b) =>
+                                    a.compareTo(b)); // Ordenar alfabéticamente
                                 centros.insert(0, 'Todos');
                                 return DropdownButton<String>(
                                   isExpanded: true,
@@ -66,10 +74,13 @@ class LaboratorioPage extends StatelessWidget {
                                       controller.setSelectedCentro(newValue);
                                     }
                                   },
-                                  items: centros.map<DropdownMenuItem<String>>((String value) {
+                                  items: centros.map<DropdownMenuItem<String>>(
+                                      (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, style: GoogleFonts.montserrat(fontSize: 12)),
+                                      child: Text(value,
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 12)),
                                     );
                                   }).toList(),
                                 );
@@ -84,7 +95,8 @@ class LaboratorioPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Curso:', style: GoogleFonts.montserrat(fontSize: 12)),
+                          Text('Curso:',
+                              style: GoogleFonts.montserrat(fontSize: 12)),
                           Container(
                             height: 35,
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -96,8 +108,13 @@ class LaboratorioPage extends StatelessWidget {
                             child: DropdownButtonHideUnderline(
                               child: Obx(() {
                                 List<String> cursos = [];
-                                cursos.addAll(controller.laboratorios.map((laboratorio) => laboratorio.cursoDescripcion).toSet().toList());
-                                cursos.sort((a, b) => a.compareTo(b)); // Ordenar alfabéticamente
+                                cursos.addAll(controller.laboratorios
+                                    .map((laboratorio) =>
+                                        laboratorio.cursoDescripcion)
+                                    .toSet()
+                                    .toList());
+                                cursos.sort((a, b) =>
+                                    a.compareTo(b)); // Ordenar alfabéticamente
                                 cursos.insert(0, 'Todos');
                                 return DropdownButton<String>(
                                   isExpanded: true,
@@ -107,10 +124,13 @@ class LaboratorioPage extends StatelessWidget {
                                       controller.setSelectedCurso(newValue);
                                     }
                                   },
-                                  items: cursos.map<DropdownMenuItem<String>>((String value) {
+                                  items: cursos.map<DropdownMenuItem<String>>(
+                                      (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, style: GoogleFonts.montserrat(fontSize: 12)),
+                                      child: Text(value,
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 12)),
                                     );
                                   }).toList(),
                                 );
@@ -129,7 +149,8 @@ class LaboratorioPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Zona:', style: GoogleFonts.montserrat(fontSize: 12)),
+                          Text('Zona:',
+                              style: GoogleFonts.montserrat(fontSize: 12)),
                           Container(
                             height: 35,
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -141,8 +162,13 @@ class LaboratorioPage extends StatelessWidget {
                             child: DropdownButtonHideUnderline(
                               child: Obx(() {
                                 List<String> zonas = [];
-                                zonas.addAll(controller.laboratorios.map((laboratorio) => laboratorio.nombreZona).toSet().toList());
-                                zonas.sort((a, b) => a.compareTo(b)); // Ordenar alfabéticamente
+                                zonas.addAll(controller.laboratorios
+                                    .map(
+                                        (laboratorio) => laboratorio.nombreZona)
+                                    .toSet()
+                                    .toList());
+                                zonas.sort((a, b) =>
+                                    a.compareTo(b)); // Ordenar alfabéticamente
                                 zonas.insert(0, 'Todos');
                                 return DropdownButton<String>(
                                   isExpanded: true,
@@ -152,10 +178,13 @@ class LaboratorioPage extends StatelessWidget {
                                       controller.setSelectedZona(newValue);
                                     }
                                   },
-                                  items: zonas.map<DropdownMenuItem<String>>((String value) {
+                                  items: zonas.map<DropdownMenuItem<String>>(
+                                      (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, style: GoogleFonts.montserrat(fontSize: 12)),
+                                      child: Text(value,
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 12)),
                                     );
                                   }).toList(),
                                 );
@@ -170,7 +199,8 @@ class LaboratorioPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Escuela:', style: GoogleFonts.montserrat(fontSize: 12)),
+                          Text('Escuela:',
+                              style: GoogleFonts.montserrat(fontSize: 12)),
                           Container(
                             height: 35,
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -182,8 +212,12 @@ class LaboratorioPage extends StatelessWidget {
                             child: DropdownButtonHideUnderline(
                               child: Obx(() {
                                 List<String> escuelas = [];
-                                escuelas.addAll(controller.laboratorios.map((laboratorio) => laboratorio.escuela).toSet().toList());
-                                escuelas.sort((a, b) => a.compareTo(b)); // Ordenar alfabéticamente
+                                escuelas.addAll(controller.laboratorios
+                                    .map((laboratorio) => laboratorio.escuela)
+                                    .toSet()
+                                    .toList());
+                                escuelas.sort((a, b) =>
+                                    a.compareTo(b)); // Ordenar alfabéticamente
                                 escuelas.insert(0, 'Todos');
                                 return DropdownButton<String>(
                                   isExpanded: true,
@@ -193,10 +227,13 @@ class LaboratorioPage extends StatelessWidget {
                                       controller.setSelectedEscuela(newValue);
                                     }
                                   },
-                                  items: escuelas.map<DropdownMenuItem<String>>((String value) {
+                                  items: escuelas.map<DropdownMenuItem<String>>(
+                                      (String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, style: GoogleFonts.montserrat(fontSize: 12)),
+                                      child: Text(value,
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 12)),
                                     );
                                   }).toList(),
                                 );
@@ -216,7 +253,10 @@ class LaboratorioPage extends StatelessWidget {
               if (controller.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
               } else if (controller.filteredLaboratorios.isEmpty) {
-                return Center(child: Text('No hay laboratorios que coincidan con los filtros.', style: GoogleFonts.montserrat()));
+                return Center(
+                    child: Text(
+                        'No hay laboratorios que coincidan con los filtros.',
+                        style: GoogleFonts.montserrat()));
               } else {
                 return LayoutBuilder(
                   builder: (context, constraints) {
@@ -236,10 +276,13 @@ class LaboratorioPage extends StatelessWidget {
                       ),
                       itemCount: controller.filteredLaboratorios.length,
                       itemBuilder: (context, index) {
+                        var laboratorio =
+                            controller.filteredLaboratorios[index];
                         return LaboratorioCard(
-                          laboratorio: controller.filteredLaboratorios[index],
+                          laboratorio: laboratorio,
                           onDelete: () {
-                            _confirmDeleteLaboratorio(context, controller.filteredLaboratorios[index], controller);
+                            _confirmDeleteLaboratorio(
+                                context, laboratorio, controller);
                           },
                         );
                       },
@@ -299,13 +342,16 @@ class LaboratorioPage extends StatelessWidget {
     );
   }
 
-  void _confirmDeleteLaboratorio(BuildContext context, Laboratorio laboratorio, LaboratorioController controller) {
+  void _confirmDeleteLaboratorio(BuildContext context, Laboratorio laboratorio,
+      LaboratorioController controller) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmar Eliminación', style: GoogleFonts.montserrat()),
-          content: Text('¿Estás seguro de que deseas eliminar este laboratorio?', style: GoogleFonts.montserrat()),
+          content: Text(
+              '¿Estás seguro de que deseas eliminar este laboratorio?',
+              style: GoogleFonts.montserrat()),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),

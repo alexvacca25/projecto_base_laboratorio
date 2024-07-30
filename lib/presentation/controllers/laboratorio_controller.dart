@@ -11,7 +11,8 @@ class LaboratorioController extends GetxController {
   final GetLaboratorio getLaboratorios;
   final PeriodoController periodoController;
 
-  LaboratorioController({required this.getLaboratorios, required this.periodoController});
+  LaboratorioController(
+      {required this.getLaboratorios, required this.periodoController});
 
   var laboratorios = <Laboratorio>[].obs;
   var filteredLaboratorios = <Laboratorio>[].obs;
@@ -33,7 +34,8 @@ class LaboratorioController extends GetxController {
     isLoading.value = true;
     laboratorios.clear();
     try {
-      var result = await getLaboratorios(periodoController.selectedPeriodoId.value);
+      var result =
+          await getLaboratorios(periodoController.selectedPeriodoId.value);
       laboratorios.value = result;
       filterLaboratorios();
     } catch (e) {
@@ -42,25 +44,32 @@ class LaboratorioController extends GetxController {
       isLoading.value = false;
     }
   }
-  
-void filterLaboratorios() {
-  var centro = selectedCentro.value;
-  var curso = selectedCurso.value;
-  var zona = selectedZona.value;
-  var escuela = selectedEscuela.value;
-  var query = searchQuery.value.toLowerCase();
 
-  filteredLaboratorios.value = laboratorios.where((laboratorio) {
-    final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
-    final matchCurso = curso == 'Todos' || laboratorio.cursoDescripcion == curso;
-    final matchZona = zona == 'Todos' || laboratorio.nombreZona == zona;
-    final matchEscuela = escuela == 'Todos' || laboratorio.escuela == escuela;
-    final matchQuery = query.isEmpty || laboratorio.cursoDescripcion.toLowerCase().contains(query);
+  void filterLaboratorios() {
+    var centro = selectedCentro.value;
+    var curso = selectedCurso.value;
+    var zona = selectedZona.value;
+    var escuela = selectedEscuela.value;
+    var query = searchQuery.value.toLowerCase();
 
-    return matchCentro && matchCurso && matchZona && matchEscuela && matchQuery;
-  }).toList()
-  ..sort((a, b) => a.cursoDescripcion.compareTo(b.cursoDescripcion)); // Ordenar alfabéticamente
-}
+    filteredLaboratorios.value = laboratorios.where((laboratorio) {
+      final matchCentro = centro == 'Todos' || laboratorio.nombreCead == centro;
+      final matchCurso =
+          curso == 'Todos' || laboratorio.cursoDescripcion == curso;
+      final matchZona = zona == 'Todos' || laboratorio.nombreZona == zona;
+      final matchEscuela = escuela == 'Todos' || laboratorio.escuela == escuela;
+      final matchQuery = query.isEmpty ||
+          laboratorio.cursoDescripcion.toLowerCase().contains(query);
+
+      return matchCentro &&
+          matchCurso &&
+          matchZona &&
+          matchEscuela &&
+          matchQuery;
+    }).toList()
+      ..sort((a, b) => a.cursoDescripcion
+          .compareTo(b.cursoDescripcion)); // Ordenar alfabéticamente
+  }
 
   void setSelectedCentro(String centro) {
     selectedCentro.value = centro;
@@ -90,59 +99,59 @@ void filterLaboratorios() {
   void addLaboratorio(Laboratorio laboratorio) async {
     /* laboratorios.add(laboratorio);
     filterLaboratorios(); */
-  final token = "123";
-  final url = '${Config.baseUrl}/addlab';
+    final token = "123";
+    final url = '${Config.baseUrl}/addlab';
 
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-    "curso": laboratorio.idCurso,
-    "centro": laboratorio.centro,
-    "estudiantes_grupo": laboratorio.estudiantesGrupo,
-    "horas_grupo": laboratorio.horasGrupo,
-    "tipo_laboratorio": null,
-    "ubicacion": null,
-    "recurso": null,
-    "periodo": periodoController.selectedPeriodoId.value,
-    "estado": 0,
-	  "token":"123"
-        
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final registrosAfectados = data['registrosAfectados'];
-      Get.snackbar(
-        'Cursos Laboratorio',
-        'Se Registraron: $registrosAfectados registros.',
-        snackPosition: SnackPosition.TOP,
-        duration: const Duration(seconds: 5), // Duración del Snackbar
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "curso": laboratorio.idCurso,
+          "centro": laboratorio.centro,
+          "estudiantes_grupo": laboratorio.estudiantesGrupo,
+          "horas_grupo": laboratorio.horasGrupo,
+          "tipo_laboratorio": null,
+          "ubicacion": null,
+          "recurso": null,
+          "periodo": periodoController.selectedPeriodoId.value,
+          "estado": 0,
+          "token": "123"
+        }),
       );
-      fetchLaboratorios(); // Actualizar los datos después de la eliminación
-    } else {
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final registrosAfectados = data['registrosAfectados'];
+        Get.snackbar(
+          'Cursos Laboratorio',
+          'Se Registraron: $registrosAfectados registros.',
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 5), // Duración del Snackbar
+        );
+        fetchLaboratorios(); // Actualizar los datos después de la eliminación
+      } else {
+        Get.snackbar(
+          'Error',
+          'No se pudo Agregar el Centro. Código de estado: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
       Get.snackbar(
         'Error',
-        'No se pudo Agregar el Centro. Código de estado: ${response.statusCode}',
+        'No se pudo Agregar el Centro',
       );
     }
-  } catch (e) {
-    Get.snackbar(
-      'Error',
-      'No se pudo Agregar el Centro',
-    );
-  }
   }
 
   void removeLaboratorio(Laboratorio laboratorio) async {
     /* laboratorios.remove(laboratorio);
     filterLaboratorios(); */
     final token = "123";
-    final url = '${Config.baseUrl}/quitar?origen=soca2015.laboratorios_cursos_centro&id=${laboratorio.id}&token=$token';
+    final url =
+        '${Config.baseUrl}/quitar?origen=soca2015.laboratorios_cursos_centro&id=${laboratorio.id}&token=$token';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -150,17 +159,16 @@ void filterLaboratorios() {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final registrosAfectados = data['registrosAfectados'];
-         Get.snackbar(
+        Get.snackbar(
           'Cursos Laboratorio ',
           'Se Retiro: $registrosAfectados registros.',
           snackPosition: SnackPosition.TOP,
           duration: const Duration(seconds: 5), // Duración del Snackbar
-          
-          
         );
         fetchLaboratorios(); // Actualizar los datos después de la clonación
       } else {
-        Get.snackbar('Error', 'No se pudo Quitar el CEntro. Código de estado: ${response.statusCode}');
+        Get.snackbar('Error',
+            'No se pudo Quitar el CEntro. Código de estado: ${response.statusCode}');
       }
     } catch (e) {
       Get.snackbar('Error', 'No se pudo Quitar el Centro');
@@ -174,13 +182,46 @@ void filterLaboratorios() {
     filterLaboratorios();
   }
 
+  void updateLaboratorio(int id, int estudiantesGrupo, int horasGrupo) async {
+    final url = '${Config.baseUrl}/editlab';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        "id": id,
+        "estudiantes": estudiantesGrupo,
+        "horas": horasGrupo,
+        "token": "123"
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      Get.snackbar(
+        'Actualización de Laboratorio',
+        data['message'],
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 5),
+      );
+      fetchLaboratorios();
+    } else {
+      Get.snackbar(
+        'Error',
+        'No se pudo actualizar el laboratorio. Código de estado: ${response.statusCode}',
+      );
+    }
+  }
+
   void downloadExcel() {
     downloadLaboratorioExcel(filteredLaboratorios);
   }
 
- void clonePeriodo(int origenId, int destinoId) async {
+  void clonePeriodo(int origenId, int destinoId) async {
     final token = "123";
-    final url = '${Config.baseUrl}/clonarlab?token=$token&origen=$origenId&destino=$destinoId';
+    final url =
+        '${Config.baseUrl}/clonarlab?token=$token&origen=$origenId&destino=$destinoId';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -188,17 +229,16 @@ void filterLaboratorios() {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final registrosAfectados = data['registrosAfectados'];
-         Get.snackbar(
+        Get.snackbar(
           'Éxito',
           'Se clonaron $registrosAfectados registros.',
           snackPosition: SnackPosition.TOP,
           duration: const Duration(seconds: 5), // Duración del Snackbar
-          
-          
         );
         fetchLaboratorios(); // Actualizar los datos después de la clonación
       } else {
-        Get.snackbar('Error', 'No se pudo clonar el período. Código de estado: ${response.statusCode}');
+        Get.snackbar('Error',
+            'No se pudo clonar el período. Código de estado: ${response.statusCode}');
       }
     } catch (e) {
       Get.snackbar('Error', 'No se pudo clonar el período');
